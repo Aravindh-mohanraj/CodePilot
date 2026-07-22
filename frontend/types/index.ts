@@ -19,11 +19,29 @@ export interface Question {
 export interface Company {
   name: string;
   questionCount: number;
-  frequency: 'High Frequency' | 'Very High' | 'Growing' | 'Top Tier' | 'Stable' | 'Elite' | 'Culture-Fit' | 'System Design';
+  frequency: string;
   brandColor: string; // e.g. "bg-blue-500"
   logoPath: string; // e.g. "/images/google.png"
   trendType: 'bar' | 'progress' | 'wave' | 'dots' | 'circle';
   trendValue?: number; // for progress/other views
+  categoryTag: 'FAANG' | 'Product' | 'Startup' | 'Enterprise';
+  overview: string;
+  rounds: string[];
+  topics: string[];
+  experiences: string[];
+  taggedQuestions: {
+    title: string;
+    difficulty: Difficulty;
+    frequencyPercent: number;
+    isLocked?: boolean;
+  }[];
+  difficultyBreakdown: {
+    easy: number;
+    medium: number;
+    hard: number;
+  };
+  prepTips: string;
+  startPracticeUrl: string;
 }
 
 export interface Category {

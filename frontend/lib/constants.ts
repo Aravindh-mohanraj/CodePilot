@@ -100,7 +100,46 @@ export const MOCK_COMPANIES: Company[] = [
     frequency: "High Frequency",
     brandColor: "bg-blue-500",
     logoPath: "/images/google.png",
-    trendType: "bar"
+    trendType: "bar",
+    categoryTag: "FAANG",
+    overview: "Google is known for rigorous interviews focusing heavily on scalable algorithms, graph structures, dynamic programming, and low-latency system design.",
+    rounds: ["Online Assessment", "Technical Phone Screen", "4x Onsite Coding Rounds", "System Design & Architecture", "Googliness & Leadership"],
+    topics: ["Graph Theory", "Dynamic Programming", "Tries & Trees", "Distributed Caching"],
+    experiences: [
+      "L4 Software Engineer: 'Three rounds of coding focusing on graphs and binary search, followed by one Googliness round. Very algorithmic focus.'",
+      "L5 Systems Architect: 'Highly architectural. Focused on scaling databases, consistent hashing, and message queues.'"
+    ],
+    taggedQuestions: [
+      { title: "Find Median from Data Stream", difficulty: "Hard", frequencyPercent: 96 },
+      { title: "LRU Cache Implementation", difficulty: "Medium", frequencyPercent: 88 },
+      { title: "Maximum Subarray Sum", difficulty: "Easy", frequencyPercent: 72 }
+    ],
+    difficultyBreakdown: { easy: 300, medium: 620, hard: 320 },
+    prepTips: "Focus heavily on graph traversals, topological sorts, and optimal memory constraints. Google interviewers love dry-running with edge cases.",
+    startPracticeUrl: "/explore?q=Google"
+  },
+  {
+    name: "Meta",
+    questionCount: 720,
+    frequency: "Top Tier",
+    brandColor: "bg-blue-600",
+    logoPath: "/images/meta.png",
+    trendType: "bar",
+    categoryTag: "FAANG",
+    overview: "Meta focuses on high-speed execution, clean code, and standard data structure operations. System design focuses heavily on product engineering (like designing Instagram or Messenger).",
+    rounds: ["Technical Screening", "2x Coding & Algorithms", "System Design", "Behavioral (PE)"],
+    topics: ["Arrays & HashMaps", "Linked Lists", "Product Design", "Concurrency"],
+    experiences: [
+      "E4 Engineer: 'Extremely fast-paced. Must solve 2 coding questions in 45 minutes with optimal time complexities.'",
+      "E5 Senior: 'System design was Messenger. Focus on push notifications, web sockets, and distributed key-value storage.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 98 },
+      { title: "LRU Cache Implementation", difficulty: "Medium", frequencyPercent: 82 }
+    ],
+    difficultyBreakdown: { easy: 240, medium: 380, hard: 100 },
+    prepTips: "Practice common LeetCode questions until you can write clean, bug-free implementations in 15-20 minutes.",
+    startPracticeUrl: "/explore?q=Meta"
   },
   {
     name: "Amazon",
@@ -109,7 +148,22 @@ export const MOCK_COMPANIES: Company[] = [
     brandColor: "bg-orange-500",
     logoPath: "/images/amazon.png",
     trendType: "progress",
-    trendValue: 85
+    trendValue: 85,
+    categoryTag: "FAANG",
+    overview: "Amazon evaluates candidates deeply on their Leadership Principles (LPs) alongside rigorous coding and system design loops.",
+    rounds: ["Online Assessment", "Technical Phone Screen", "4x Onsite Loops", "Bar Raiser Panel"],
+    topics: ["Trees & Graphs", "Object Oriented Design", "System Design", "Leadership Principles"],
+    experiences: [
+      "SDE II: 'Every interviewer spent 15-20 minutes asking LP questions. Make sure to structure your answers in STAR format.'",
+      "SDE I: 'Standard array and hashmap questions. OOD loop focused on parking lot design.'"
+    ],
+    taggedQuestions: [
+      { title: "Trapping Rain Water", difficulty: "Hard", frequencyPercent: 94 },
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 78 }
+    ],
+    difficultyBreakdown: { easy: 300, medium: 480, hard: 200 },
+    prepTips: "Prepare stories for Customer Obsession, Ownership, and Bias for Action. Practice sliding window and queue operations.",
+    startPracticeUrl: "/explore?q=Amazon"
   },
   {
     name: "Microsoft",
@@ -117,23 +171,22 @@ export const MOCK_COMPANIES: Company[] = [
     frequency: "Growing",
     brandColor: "bg-blue-400",
     logoPath: "/images/microsoft.png",
-    trendType: "wave"
-  },
-  {
-    name: "Meta",
-    questionCount: 720,
-    frequency: "Top Tier",
-    brandColor: "bg-blue-600",
-    logoPath: "/images/meta.png",
-    trendType: "bar"
-  },
-  {
-    name: "Adobe",
-    questionCount: 450,
-    frequency: "Stable",
-    brandColor: "bg-red-500",
-    logoPath: "/images/adobe.png",
-    trendType: "dots"
+    trendType: "wave",
+    categoryTag: "Enterprise",
+    overview: "Microsoft focus is on solid software engineering fundamentals, multi-threading, clean modular design, and platform understanding.",
+    rounds: ["Phone Screen", "4x Onsite Coding Loops", "System Design & Cloud Architecture"],
+    topics: ["Trees & BSTs", "Linked Lists", "System Architecture", "Multi-threading"],
+    experiences: [
+      "SDE II: 'Focus was heavily on binary trees and linked lists. Had a round on designing a cloud file storage system.'",
+      "SDE I: 'Simple recursive questions. Interviewers were very supportive and collaborative.'"
+    ],
+    taggedQuestions: [
+      { title: "House Robber III", difficulty: "Medium", frequencyPercent: 85 },
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 70 }
+    ],
+    difficultyBreakdown: { easy: 290, medium: 420, hard: 140 },
+    prepTips: "Brush up on pointer operations and tree traversals. Be ready to explain memory allocation in cloud environments.",
+    startPracticeUrl: "/explore?q=Microsoft"
   },
   {
     name: "Apple",
@@ -142,7 +195,21 @@ export const MOCK_COMPANIES: Company[] = [
     brandColor: "bg-slate-300",
     logoPath: "/images/apple.png",
     trendType: "progress",
-    trendValue: 66
+    trendValue: 66,
+    categoryTag: "FAANG",
+    overview: "Apple interview processes are highly team-specific, focusing deeply on lower-level details, hardware-software integration, and operating system basics.",
+    rounds: ["Recruiter Call", "Team Screening", "4-5x Technical Onsites"],
+    topics: ["Memory Management", "C/C++ Pointer Mechanics", "System Design", "Concurrency & Threads"],
+    experiences: [
+      "OS Engineer: 'Intense rounds focusing on thread scheduling, virtual memory, and hardware interfaces. Very low-level focus.'",
+      "Software Engineer: 'Standard data structures but they asked deeply about pointer math and cache optimization.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 86 }
+    ],
+    difficultyBreakdown: { easy: 180, medium: 320, hard: 110 },
+    prepTips: "Know your pointers, threads, memory layouts, and stack vs heap. Review team-specific tech stacks closely.",
+    startPracticeUrl: "/explore?q=Apple"
   },
   {
     name: "Netflix",
@@ -151,7 +218,65 @@ export const MOCK_COMPANIES: Company[] = [
     brandColor: "bg-red-600",
     logoPath: "/images/netflix.png",
     trendType: "progress",
-    trendValue: 100
+    trendValue: 100,
+    categoryTag: "FAANG",
+    overview: "Netflix prioritizes senior engineers who can demonstrate exceptional system design prowess, high alignment, and deep cultural fit.",
+    rounds: ["Phone Screen", "Technical System Design", "2x Coding & Concurrency", "2x Cultural Fit Loops"],
+    topics: ["System Design", "Scalability & CDN", "Cultural Alignment", "Data Pipelines"],
+    experiences: [
+      "Senior SDE: 'Two dedicated rounds on Netflix Culture. They expect you to read the cultural memo and align with it fully.'",
+      "Infrastructure Engineer: 'Designed a regional failover strategy for video streams. Coding was concurrency-heavy.'"
+    ],
+    taggedQuestions: [
+      { title: "LRU Cache Implementation", difficulty: "Medium", frequencyPercent: 92 }
+    ],
+    difficultyBreakdown: { easy: 80, medium: 180, hard: 80 },
+    prepTips: "Read the Netflix Culture Memo. Focus on distributed tracing, CDNs, load balancing, and network traffic optimization.",
+    startPracticeUrl: "/explore?q=Netflix"
+  },
+  {
+    name: "Uber",
+    questionCount: 420,
+    frequency: "System Design",
+    brandColor: "bg-black",
+    logoPath: "/images/google.png", // fallback placeholder logo
+    trendType: "dots",
+    categoryTag: "Product",
+    overview: "Uber focuses deeply on geo-spatial operations, high concurrency, caching, and low-latency system design.",
+    rounds: ["Screening", "2x Coding", "System Design (Geo-spatial)", "Bar Raiser"],
+    topics: ["Geo-spatial Indexing", "Concurrency", "Graph Search", "Distributed Caching"],
+    experiences: [
+      "SDE II: 'System Design round was Ride Hailing architecture. They wanted details on spatial databases and indexing (like H3).'",
+      "SDE I: 'Graph traversals and shortest path algorithms. Time constraints were tight.'"
+    ],
+    taggedQuestions: [
+      { title: "Find Median from Data Stream", difficulty: "Hard", frequencyPercent: 88 },
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 74 }
+    ],
+    difficultyBreakdown: { easy: 110, medium: 210, hard: 100 },
+    prepTips: "Understand geo-spatial indexes (Quadtree, H3, R-Tree), distributed lock mechanisms, and read-heavy caching strategies.",
+    startPracticeUrl: "/explore?q=Uber"
+  },
+  {
+    name: "Airbnb",
+    questionCount: 310,
+    frequency: "Design Heavy",
+    brandColor: "bg-red-400",
+    logoPath: "/images/netflix.png", // fallback placeholder
+    trendType: "wave",
+    categoryTag: "Product",
+    overview: "Airbnb interviews emphasize pixel-perfect frontend engineering, structured data storage design, and friendly teamwork.",
+    rounds: ["Screening", "Coding Loop", "Frontend/System Design", "Host Matching & Behavioral"],
+    topics: ["Frontend Architecture", "Search Indexing", "Databases & Indexing", "Behavioral"],
+    experiences: [
+      "Senior SDE: 'Designed a real-time reservation check-out system. Focused heavily on concurrency locks and double-booking avoidance.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 70 }
+    ],
+    difficultyBreakdown: { easy: 90, medium: 150, hard: 70 },
+    prepTips: "Practice designing reservation databases. Focus on synchronization and atomic transactions.",
+    startPracticeUrl: "/explore?q=Airbnb"
   },
   {
     name: "Stripe",
@@ -159,7 +284,83 @@ export const MOCK_COMPANIES: Company[] = [
     frequency: "System Design",
     brandColor: "bg-indigo-500",
     logoPath: "/images/stripe.png",
-    trendType: "dots"
+    trendType: "dots",
+    categoryTag: "Startup",
+    overview: "Stripe focuses on practical software development. They ask candidates to write complete, clean, running applications rather than competitive math puzzles.",
+    rounds: ["Integration Coding", "System Design", "Bug Squash Loop", "Manager Chat"],
+    topics: ["API Design", "Data Structures", "Transaction Consistency", "Idempotent Services"],
+    experiences: [
+      "SDE II: 'Instead of Leetcode, they gave me an HTTP integration challenge. I had to read documentation and write code that worked. Extremely refreshing!'"
+    ],
+    taggedQuestions: [
+      { title: "LRU Cache Implementation", difficulty: "Medium", frequencyPercent: 95 }
+    ],
+    difficultyBreakdown: { easy: 150, medium: 260, hard: 100 },
+    prepTips: "Learn how to use HTTP libraries, parse JSON objects rapidly, and handle API retries and idempotency key constraints.",
+    startPracticeUrl: "/explore?q=Stripe"
+  },
+  {
+    name: "Atlassian",
+    questionCount: 290,
+    frequency: "Growing",
+    brandColor: "bg-blue-600",
+    logoPath: "/images/microsoft.png", // fallback
+    trendType: "circle",
+    categoryTag: "Product",
+    overview: "Atlassian values candidate values and practical coding capability, focusing heavily on collaborative software development skills.",
+    rounds: ["Screening", "Algorithms & Structure", "Design Loop", "Values Interview"],
+    topics: ["Data Structure Design", "System Design", "Atlassian Values", "Object Modeling"],
+    experiences: [
+      "SDE II: 'Values round was intense but friendly. The coding round felt like pair programming rather than an examination.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 68 }
+    ],
+    difficultyBreakdown: { easy: 80, medium: 150, hard: 60 },
+    prepTips: "Study the Atlassian Values (e.g. 'Build with heart and balance'). Practice object-oriented design patterns.",
+    startPracticeUrl: "/explore?q=Atlassian"
+  },
+  {
+    name: "Adobe",
+    questionCount: 450,
+    frequency: "Stable",
+    brandColor: "bg-red-500",
+    logoPath: "/images/adobe.png",
+    trendType: "dots",
+    categoryTag: "Enterprise",
+    overview: "Adobe interviews cover algorithmic logic, memory efficiency, design patterns, and creative suite structures.",
+    rounds: ["Online Assessment", "Technical Screen", "3-4x Onsite Loops"],
+    topics: ["Arrays & Trees", "OOD Patterns", "Matrix Operations", "System Design"],
+    experiences: [
+      "Software Engineer: 'Algorithmic focus was standard. Had some questions on matrices and coordinate mathematics.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 78 }
+    ],
+    difficultyBreakdown: { easy: 130, medium: 220, hard: 100 },
+    prepTips: "Practice tree operations and matrix rotations. Understand object-oriented concepts like Singleton and Factory patterns.",
+    startPracticeUrl: "/explore?q=Adobe"
+  },
+  {
+    name: "Salesforce",
+    questionCount: 380,
+    frequency: "Enterprise",
+    brandColor: "bg-sky-400",
+    logoPath: "/images/google.png", // fallback
+    trendType: "circle",
+    categoryTag: "Enterprise",
+    overview: "Salesforce looks for engineers with database understanding, robust API development, security concepts, and enterprise cloud architecture.",
+    rounds: ["Online Test", "Phone Interview", "4x Coding & Systems Loops"],
+    topics: ["Databases", "API Architectures", "Security Concepts", "Behavioral"],
+    experiences: [
+      "Developer II: 'They asked deeply about transaction rollbacks, SQL queries, and multi-tenant architectures.'"
+    ],
+    taggedQuestions: [
+      { title: "Two Sum", difficulty: "Easy", frequencyPercent: 70 }
+    ],
+    difficultyBreakdown: { easy: 100, medium: 190, hard: 90 },
+    prepTips: "Review SQL query optimizations, ACID principles, indexing, and multi-tenant storage patterns.",
+    startPracticeUrl: "/explore?q=Salesforce"
   }
 ];
 
