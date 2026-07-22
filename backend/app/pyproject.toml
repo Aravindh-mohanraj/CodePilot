@@ -3,11 +3,14 @@ name = "codepilot-backend"
 version = "0.1.0"
 requires-python = ">=3.9"
 dependencies = [
-    "fastapi",
-    "uvicorn[standard]",
-    "sqlalchemy",
-    "pydantic",
-    "databases"
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "sqlalchemy>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "google-generativeai>=0.4.0",
+    "pydantic>=2.0.0",
+    "requests>=2.31.0",
+    "httpx>=0.27.0"
 ]
 
 [build-system]

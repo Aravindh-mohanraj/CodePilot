@@ -602,41 +602,75 @@ def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
     user_avatar = None
     google_sub = None
 
-    # 1. Real Google ID Token Verification via Google OAuth2 TokenInfo API
+    def _get(url, headers=None, timeout=8):
+        """Try requests, then httpx as fallback."""
+        try:
+            import requests as req_lib
+            r = req_lib.get(url, headers=headers or {}, timeout=timeout)
+            return r.status_code, r.json()
+        except Exception as e1:
+            print(f"requests failed ({e1}), trying httpx...")
+            try:
+                import httpx
+                r = httpx.get(url, headers=headers or {}, timeout=timeout)
+                return r.status_code, r.json()
+            except Exception as e2:
+                print(f"httpx also failed: {e2}")
+                return None, None
+
+    # 1. ID Token verification via Google TokenInfo API
     if req.id_token:
         try:
-            import requests
-            google_res = requests.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={req.id_token}", timeout=5)
-            if google_res.status_code == 200:
-                g_data = google_res.json()
+            status, g_data = _get(
+                f"https://oauth2.googleapis.com/tokeninfo?id_token={req.id_token}"
+            )
+            print(f"ID token verify status: {status}, data keys: {list(g_data.keys()) if g_data else None}")
+            if status == 200 and g_data:
                 user_email = g_data.get("email")
                 user_name = g_data.get("name") or g_data.get("given_name") or "Google User"
                 user_avatar = g_data.get("picture")
                 google_sub = g_data.get("sub")
         except Exception as e:
-            print("Google ID Token verification failed:", e)
+            print("ID token verification exception:", e)
 
-    # 2. Real Google Access Token Verification via Google UserInfo API
+    # 2. Access Token verification via Google UserInfo API
     if not user_email and req.access_token:
         try:
-            import requests
-            userinfo_res = requests.get("https://www.googleapis.com/oauth2/v3/userinfo", headers={"Authorization": f"Bearer {req.access_token}"}, timeout=5)
-            if userinfo_res.status_code == 200:
-                g_data = userinfo_res.json()
+            status, g_data = _get(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                headers={"Authorization": f"Bearer {req.access_token}"}
+            )
+            print(f"UserInfo status: {status}, data keys: {list(g_data.keys()) if g_data else None}")
+            if status == 200 and g_data:
                 user_email = g_data.get("email")
-                user_name = g_data.get("name") or "Google User"
+                user_name = g_data.get("name") or g_data.get("given_name") or "Google User"
                 user_avatar = g_data.get("picture")
                 google_sub = g_data.get("sub")
+            else:
+                # Try alternate userinfo endpoint
+                status2, g_data2 = _get(
+                    "https://openidconnect.googleapis.com/v1/userinfo",
+                    headers={"Authorization": f"Bearer {req.access_token}"}
+                )
+                print(f"Alt UserInfo status: {status2}, data: {g_data2}")
+                if status2 == 200 and g_data2:
+                    user_email = g_data2.get("email")
+                    user_name = g_data2.get("name") or "Google User"
+                    user_avatar = g_data2.get("picture")
+                    google_sub = g_data2.get("sub")
         except Exception as e:
-            print("Google UserInfo request failed:", e)
+            print("Access token verification exception:", e)
 
-    # 3. Fallback for custom/fallback inputs
+    # 3. Fallback — accept name/email directly (for OAuth implicit flow)
     if not user_email:
         if req.email:
             user_email = req.email.strip().lower()
             user_name = req.name or "Google User"
+            print(f"Using fallback email: {user_email}")
         else:
+            print(f"Auth failed. id_token={'set' if req.id_token else 'none'}, access_token={'set' if req.access_token else 'none'}, email={'set' if req.email else 'none'}")
             raise HTTPException(status_code=400, detail="Google authentication token or email required")
+
 
     # Generate high quality Google-style avatar if not provided
     if not user_avatar:
