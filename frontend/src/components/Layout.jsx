@@ -30,17 +30,16 @@ export default function Layout({ children }) {
     syncUser();
     window.addEventListener('storage', syncUser);
     return () => window.removeEventListener('storage', syncUser);
-  }, [location.pathname]);
+  }, []);
 
-  // Lock site requirement: If user is not logged in and attempts to access non-landing pages, force AuthModal
-  const isLandingPage = location.pathname === '/';
-  const isProtectedPage = !isLandingPage;
-
+  // Redirect rule: Logged-in users are redirected to /dashboard away from home page
   useEffect(() => {
-    if (!currentUser && isProtectedPage) {
+    if (currentUser && location.pathname === '/') {
+      navigate('/dashboard', { replace: true });
+    } else if (!currentUser && location.pathname !== '/') {
       setIsAuthOpen(true);
     }
-  }, [currentUser, isProtectedPage]);
+  }, [currentUser, location.pathname, navigate]);
 
   const openAuth = (mode) => {
     setAuthMode(mode);
@@ -51,8 +50,8 @@ export default function Layout({ children }) {
     localStorage.removeItem('prepforge_user');
     localStorage.removeItem('prepforge_token');
     setCurrentUser(null);
+    setIsAuthOpen(false);
     navigate('/');
-    setIsAuthOpen(true);
   };
 
   const navItems = [
@@ -90,7 +89,7 @@ export default function Layout({ children }) {
             <span className="material-symbols-outlined">{mobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
           
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to={currentUser ? "/dashboard" : "/"} className="flex items-center gap-3 group">
             <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-[#6001d1] via-[#8083ff] to-[#c0c1ff] p-0.5 shadow-lg shadow-purple-900/30 group-hover:scale-105 transition-transform">
               <div className="w-full h-full bg-[#13131b] rounded-[10px] flex items-center justify-center">
                 <span className="font-extrabold text-[#c0c1ff] text-lg font-mono">P</span>
@@ -285,6 +284,7 @@ export default function Layout({ children }) {
         onSuccess={(user) => {
           setCurrentUser(user);
           setIsAuthOpen(false);
+          navigate('/dashboard');
         }}
       />
     </div>
