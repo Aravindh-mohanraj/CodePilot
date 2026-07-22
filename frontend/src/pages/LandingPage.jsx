@@ -1,7 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('prepforge_user')) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-[#0d0d15] text-[#e4e1ed] relative overflow-hidden">
       
