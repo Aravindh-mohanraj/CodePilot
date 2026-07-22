@@ -9,6 +9,8 @@ import AIAssistantPage from './pages/AIAssistantPage';
 import CompaniesPage from './pages/CompaniesPage';
 import CategoriesPage from './pages/CategoriesPage';
 import ProfilePage from './pages/ProfilePage';
+import ReferencePage from './pages/ReferencePage';
+
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/companies" element={<CompaniesPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/reference" element={<ReferencePage />} />
+
         </Routes>
       </Layout>
     </BrowserRouter>

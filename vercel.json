@@ -14,41 +14,16 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/auth/(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/questions(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/download(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/user/(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/generate-ai/(.*)",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/ai-chat",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/execute-code",
-      "dest": "backend/app/main.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
-    }
+    { "src": "/api/(.*)", "dest": "backend/app/main.py" },
+    { "src": "/auth/(.*)", "dest": "backend/app/main.py" },
+    { "src": "/questions(.*)", "dest": "backend/app/main.py" },
+    { "src": "/download(.*)", "dest": "backend/app/main.py" },
+    { "src": "/user/(.*)", "dest": "backend/app/main.py" },
+    { "src": "/generate-ai/(.*)", "dest": "backend/app/main.py" },
+    { "src": "/ai-chat", "dest": "backend/app/main.py" },
+    { "src": "/execute-code", "dest": "backend/app/main.py" },
+    { "src": "/reference/(.*)", "dest": "backend/app/main.py" },
+    { "src": "/reference", "dest": "backend/app/main.py" },
+    { "src": "/(.*)", "dest": "frontend/$1" }
   ]
 }

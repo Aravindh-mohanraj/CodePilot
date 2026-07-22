@@ -61,8 +61,10 @@ export default function Layout({ children }) {
     { label: 'Companies', path: '/companies', icon: 'domain' },
     { label: 'Categories', path: '/categories', icon: 'category' },
     { label: 'AI Assistant', path: '/ai-assistant', icon: 'smart_toy' },
+    { label: 'Reference', path: '/reference', icon: 'menu_book' },
     { label: 'Profile', path: '/profile', icon: 'person' },
   ];
+
 
   const handleSearch = (e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {

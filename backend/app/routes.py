@@ -12,7 +12,7 @@ import hashlib
 from datetime import datetime
 
 from .database import get_db
-from .models import Question, User, UserSubmission, UserDownload
+from .models import Question, User, UserSubmission, UserDownload, NonCodingQuestion
 from .gemini_service import generate_solution, chat_with_ai
 
 router = APIRouter()
@@ -701,4 +701,73 @@ def update_avatar(req: AvatarUpdateRequest, db: Session = Depends(get_db)):
             "avatar": user.avatar,
             "is_verified": user.is_verified
         }
+    }
+
+
+# ─────────────── REFERENCE / NON-CODING QUESTIONS ───────────────
+
+REFERENCE_TOPICS = [
+    "Machine Learning",
+    "Operating Systems",
+    "Database Management",
+    "Computer Networks",
+    "System Design",
+    "Object Oriented Programming",
+    "Data Structures",
+    "Algorithms",
+]
+
+@router.get("/reference/topics")
+def get_reference_topics():
+    return {"topics": REFERENCE_TOPICS}
+
+@router.get("/reference/questions")
+def get_reference_questions(
+    topic: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    search: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db)
+):
+    query = db.query(NonCodingQuestion)
+    if topic:
+        query = query.filter(NonCodingQuestion.topic == topic)
+    if difficulty:
+        query = query.filter(NonCodingQuestion.difficulty == difficulty)
+    if search:
+        query = query.filter(NonCodingQuestion.title.contains(search))
+    total = query.count()
+    questions = query.offset(skip).limit(limit).all()
+    return {
+        "total": total,
+        "questions": [
+            {
+                "id": q.id,
+                "title": q.title,
+                "topic": q.topic,
+                "subtopic": q.subtopic,
+                "answer": q.answer,
+                "difficulty": q.difficulty,
+                "tags": q.tags or [],
+                "source": q.source or "General",
+            }
+            for q in questions
+        ]
+    }
+
+@router.get("/reference/questions/{question_id}")
+def get_reference_question(question_id: int, db: Session = Depends(get_db)):
+    q = db.query(NonCodingQuestion).filter(NonCodingQuestion.id == question_id).first()
+    if not q:
+        raise HTTPException(status_code=404, detail="Reference question not found")
+    return {
+        "id": q.id,
+        "title": q.title,
+        "topic": q.topic,
+        "subtopic": q.subtopic,
+        "answer": q.answer,
+        "difficulty": q.difficulty,
+        "tags": q.tags or [],
+        "source": q.source or "General",
     }

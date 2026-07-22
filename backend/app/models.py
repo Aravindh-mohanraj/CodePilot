@@ -90,3 +90,26 @@ class UserDownload(Base):
     questions_count = Column(Integer)
 
     created_at = Column(String)
+
+
+class NonCodingQuestion(Base):
+
+    __tablename__ = "non_coding_questions"
+
+    id = Column(Integer, primary_key=True)
+
+    title = Column(String)
+
+    topic = Column(String)  # Machine Learning, Operating Systems, DBMS, etc.
+
+    subtopic = Column(String, nullable=True)
+
+    answer = Column(String)
+
+    difficulty = Column(String)
+
+    tags = Column(JSON, nullable=True)
+
+    source = Column(String, nullable=True)
+
+    created_at = Column(String, nullable=True)
