@@ -21,4 +21,4 @@ build-backend = "setuptools.build_meta"
 packages = ["backend", "backend.app", "api"]
 
 [tool.vercel]
-entrypoint = "api/index.py:app"
+entrypoint = "api.index:app"
