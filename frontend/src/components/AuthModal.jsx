@@ -40,7 +40,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
     setErrorMsg('');
     setSubmitting(true);
     try {
-      const res = await fetch('/auth/google', {
+      const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_token: credentialResponse.credential })
@@ -71,7 +71,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
           callback: async (tokenResponse) => {
             if (tokenResponse && tokenResponse.access_token) {
               try {
-                const res = await fetch('/auth/google', {
+                const res = await fetch('/api/auth/google', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ access_token: tokenResponse.access_token })
@@ -129,7 +129,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
 
   const handleDemoLogin = async () => {
     try {
-      const res = await fetch('/auth/google', {
+      const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: 'Guest Developer', email: 'guest.developer@code-pilot.com' })
@@ -152,7 +152,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
     setErrorMsg('');
     setSubmitting(true);
     try {
-      const endpoint = mode === 'signup' ? '/auth/signup' : '/auth/login';
+      const endpoint = mode === 'signup' ? '/api/auth/signup' : '/api/auth/login';
       const payload = mode === 'signup' ? { name, email, password } : { email, password };
       const res = await fetch(endpoint, {
         method: 'POST',

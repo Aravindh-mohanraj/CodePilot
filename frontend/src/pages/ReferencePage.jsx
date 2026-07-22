@@ -33,7 +33,7 @@ export default function ReferencePage() {
       const params = new URLSearchParams({ topic, limit: 100 });
       if (diff) params.set('difficulty', diff);
       if (q) params.set('search', q);
-      const res = await fetch(`/reference/questions?${params}`);
+      const res = await fetch(`/api/reference/questions?${params}`);
       const data = await res.json();
       setQuestions(data.questions || []);
       setTotal(data.total || 0);

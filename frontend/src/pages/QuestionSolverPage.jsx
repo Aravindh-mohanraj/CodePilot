@@ -25,7 +25,7 @@ export default function QuestionSolverPage() {
   const fetchQuestionDetails = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/questions/${id}`);
+      const res = await fetch(`/api/questions/${id}`);
       if (!res.ok) throw new Error('Question not found');
       const data = await res.json();
       setQuestion(data);
@@ -101,7 +101,7 @@ export default function QuestionSolverPage() {
     if (!question) return;
     setGeneratingAI(true);
     try {
-      const res = await fetch(`/generate-ai/${question.id}`, {
+      const res = await fetch(`/api/generate-ai/${question.id}`, {
         method: 'POST',
       });
       const data = await res.json();
@@ -126,7 +126,7 @@ export default function QuestionSolverPage() {
       const userObj = stored ? JSON.parse(stored) : null;
       const userEmail = userObj?.email || '';
 
-      const res = await fetch('/execute-code', {
+      const res = await fetch('/api/execute-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

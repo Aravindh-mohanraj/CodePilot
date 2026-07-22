@@ -21,7 +21,9 @@ try:
 except Exception as e:
     print("Database initialization notice:", e)
 
+app.include_router(router, prefix="/api")
 app.include_router(router)
+
 
 # Resolve path to the frontend build directory with Vercel serverless fallbacks
 possible_dirs = [

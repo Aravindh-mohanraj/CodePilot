@@ -36,7 +36,7 @@ export default function AIAssistantPage() {
     setIsThinking(true);
 
     try {
-      const res = await fetch('/ai-chat', {
+      const res = await fetch('/api/ai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: query, context: 'Technical interview practice session' })

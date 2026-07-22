@@ -10,7 +10,7 @@ export default function CategoriesPage() {
       try {
         const user = JSON.parse(stored);
         if (user?.email) {
-          fetch(`/user/progress?email=${encodeURIComponent(user.email)}`)
+          fetch(`/api/user/progress?email=${encodeURIComponent(user.email)}`)
             .then(res => res.json())
             .then(data => setSolvedCount(data.solved_count || 0))
             .catch(() => {});

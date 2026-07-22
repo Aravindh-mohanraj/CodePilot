@@ -28,7 +28,7 @@ export default function ExploreQuestionsPage() {
     try {
       const user = JSON.parse(stored);
       if (user?.email) {
-        const res = await fetch(`/user/progress?email=${encodeURIComponent(user.email)}`);
+        const res = await fetch(`/api/user/progress?email=${encodeURIComponent(user.email)}`);
         if (res.ok) {
           const data = await res.json();
           setSolvedIds(data.solved_ids || []);
@@ -47,7 +47,7 @@ export default function ExploreQuestionsPage() {
       if (category) queryParams.append('category', category);
       if (difficulty) queryParams.append('difficulty', difficulty);
 
-      const res = await fetch(`/questions?${queryParams.toString()}`);
+      const res = await fetch(`/api/questions?${queryParams.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setQuestions(data);
@@ -98,7 +98,7 @@ export default function ExploreQuestionsPage() {
       const userObj = stored ? JSON.parse(stored) : null;
       const userEmail = userObj?.email || '';
 
-      const response = await fetch(`/download?email=${encodeURIComponent(userEmail)}`, {
+      const response = await fetch(`/api/download?email=${encodeURIComponent(userEmail)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(selectedIds),

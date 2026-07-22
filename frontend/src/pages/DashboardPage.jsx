@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const fetchUserProgress = async (userEmail) => {
     if (!userEmail) return;
     try {
-      const res = await fetch(`/user/progress?email=${encodeURIComponent(userEmail)}`);
+      const res = await fetch(`/api/user/progress?email=${encodeURIComponent(userEmail)}`);
       if (res.ok) {
         const data = await res.json();
         setProgress(data);
@@ -43,7 +43,7 @@ export default function DashboardPage() {
 
   const fetchQuestions = async () => {
     try {
-      const res = await fetch('/questions');
+      const res = await fetch('/api/questions');
       if (res.ok) {
         const data = await res.json();
         setRecentQuestions(data.slice(0, 4));
@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
   const fetchDailyQuestion = async () => {
     try {
-      const res = await fetch('/questions/daily');
+      const res = await fetch('/api/questions/daily');
       if (res.ok) {
         const data = await res.json();
         setDailyQuestion(data.question);

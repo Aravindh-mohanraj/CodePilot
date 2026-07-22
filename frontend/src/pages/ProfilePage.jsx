@@ -34,7 +34,7 @@ export default function ProfilePage() {
   const fetchUserProgress = async (userEmail) => {
     if (!userEmail) return;
     try {
-      const res = await fetch(`/user/progress?email=${encodeURIComponent(userEmail)}`);
+      const res = await fetch(`/api/user/progress?email=${encodeURIComponent(userEmail)}`);
       if (res.ok) {
         const data = await res.json();
         setProgress(data);
@@ -47,7 +47,7 @@ export default function ProfilePage() {
   const fetchDownloadHistory = async (userEmail) => {
     if (!userEmail) return;
     try {
-      const res = await fetch(`/user/downloads?email=${encodeURIComponent(userEmail)}`);
+      const res = await fetch(`/api/user/downloads?email=${encodeURIComponent(userEmail)}`);
       if (res.ok) {
         const data = await res.json();
         setDownloadHistory(data.downloads || []);
@@ -77,7 +77,7 @@ export default function ProfilePage() {
 
     setUpdatingAvatar(true);
     try {
-      const res = await fetch('/auth/update-avatar', {
+      const res = await fetch('/api/auth/update-avatar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
