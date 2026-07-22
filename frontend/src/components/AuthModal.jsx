@@ -61,9 +61,10 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
   };
 
   const openGoogleOAuthUrlPopup = () => {
-    const redirectUri = window.location.origin;
+    const redirectUri = window.location.origin.replace(/\/$/, '');  // strip trailing slash
     const scope = encodeURIComponent('email profile');
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
+
     
     const width = 500;
     const height = 600;
