@@ -1,0 +1,223 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-surface-variant: var(--surface-variant);
+  
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+
+  /* Spacing */
+  --spacing-md: 16px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-container-max: 1280px;
+
+  /* Border Radii */
+  --radius-sm: 0.25rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 24px;
+}
+
+:root {
+  /* PrepForge AI is forced dark mode */
+  --background: #13131b;
+  --foreground: #e4e1ed;
+  
+  --surface: #13131b;
+  --surface-dim: #13131b;
+  --surface-bright: #393841;
+  --surface-container-lowest: #0d0d15;
+  --surface-container-low: #1b1b23;
+  --surface-container: #1f1f27;
+  --surface-container-high: #292932;
+  --surface-container-highest: #34343d;
+  --surface-variant: #34343d;
+  
+  --on-surface: #e4e1ed;
+  --on-surface-variant: #c7c4d7;
+  --inverse-surface: #e4e1ed;
+  --inverse-on-surface: #303038;
+  
+  --outline: #908fa0;
+  --outline-variant: #464554;
+  --border: #27272A;
+  
+  --primary: #c0c1ff;
+  --on-primary: #1000a9;
+  --primary-container: #8083ff;
+  --on-primary-container: #0d0096;
+  
+  --secondary: #d2bbff;
+  --on-secondary: #3f008e;
+  --secondary-container: #6001d1;
+  --on-secondary-container: #c9aeff;
+  
+  --tertiary: #ffb783;
+  --on-tertiary: #4f2500;
+  --tertiary-container: #d97721;
+  --on-tertiary-container: #452000;
+  
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+
+  /* shadcn/ui properties mapped */
+  --card: #13131b;
+  --card-foreground: #e4e1ed;
+  --popover: #13131b;
+  --popover-foreground: #e4e1ed;
+  --muted: #1b1b23;
+  --muted-foreground: #c7c4d7;
+  --accent: #1f1f27;
+  --accent-foreground: #e4e1ed;
+  --destructive: #93000a;
+  --destructive-foreground: #ffdad6;
+  --ring: #c0c1ff;
+  --radius: 0.5rem;
+  --input: #1b1b23;
+}
+
+/* Custom styles and animations */
+.ai-gradient-text {
+  background: linear-gradient(135deg, #c0c1ff 0%, #8083ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  background: rgba(31, 31, 39, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(144, 143, 160, 0.1);
+}
+
+.glass-panel {
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(39, 39, 42, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.ai-glow {
+  box-shadow: 0 0 40px -10px rgba(96, 1, 209, 0.3);
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.input-focus-ring:focus {
+  outline: none;
+  border-color: #c0c1ff;
+  box-shadow: 0 0 0 2px rgba(192, 193, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #34343d;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #464554;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(192, 193, 255, 0.3);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(192, 193, 255, 0.6);
+    opacity: 0.95;
+  }
+}
+
+.pulse-glow-effect {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-foreground;
+  }
+}
