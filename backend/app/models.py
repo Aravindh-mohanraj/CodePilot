@@ -55,9 +55,14 @@ class User(Base):
 
     avatar = Column(String, nullable=True)
 
+    preferred_language = Column(String, default="python", nullable=True)
+
+    settings = Column(JSON, nullable=True)
+
     is_verified = Column(String, default="true")
 
     created_at = Column(String)
+
 
 class UserSubmission(Base):
 

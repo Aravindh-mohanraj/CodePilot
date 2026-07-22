@@ -813,6 +813,71 @@ def update_avatar(req: AvatarUpdateRequest, db: Session = Depends(get_db)):
     }
 
 
+class ProfileUpdateRequest(BaseModel):
+    email: str
+    name: Optional[str] = None
+    avatar: Optional[str] = None
+    preferred_language: Optional[str] = None
+    settings: Optional[dict] = None
+
+@router.post("/user/update-profile")
+def update_profile(req: ProfileUpdateRequest, db: Session = Depends(get_db)):
+    email_clean = req.email.strip().lower()
+    user = db.query(User).filter(User.email == email_clean).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if req.name and req.name.strip():
+        user.name = req.name.strip()
+    if req.avatar and req.avatar.strip():
+        user.avatar = req.avatar.strip()
+    if req.preferred_language:
+        user.preferred_language = req.preferred_language
+    if req.settings is not None:
+        user.settings = req.settings
+        
+    db.commit()
+    db.refresh(user)
+    return {
+        "status": "success",
+        "message": "Profile and settings updated successfully",
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "avatar": user.avatar,
+            "preferred_language": user.preferred_language,
+            "settings": user.settings or {},
+            "is_verified": user.is_verified
+        }
+    }
+
+class PasswordChangeRequest(BaseModel):
+    email: str
+    old_password: Optional[str] = None
+    new_password: str
+
+@router.post("/user/change-password")
+def change_password(req: PasswordChangeRequest, db: Session = Depends(get_db)):
+    email_clean = req.email.strip().lower()
+    user = db.query(User).filter(User.email == email_clean).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if req.old_password and user.hashed_password != hash_password("google_oauth_provider"):
+        if user.hashed_password != hash_password(req.old_password):
+            raise HTTPException(status_code=400, detail="Incorrect current password")
+            
+    user.hashed_password = hash_password(req.new_password)
+    db.commit()
+    return {
+        "status": "success",
+        "message": "Password updated successfully"
+    }
+
+
+
+
 # ─────────────── REFERENCE / NON-CODING QUESTIONS ───────────────
 
 REFERENCE_TOPICS = [
