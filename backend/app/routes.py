@@ -258,6 +258,53 @@ def download_questions(question_ids: List[int], email: Optional[str] = Query(Non
         media_type="application/json"
     )
 
+@router.post("/reference/download")
+def download_reference_questions(question_ids: List[int], email: Optional[str] = Query(None), db: Session = Depends(get_db)):
+    questions = db.query(NonCodingQuestion).filter(NonCodingQuestion.id.in_(question_ids)).all()
+
+    result = []
+    for q in questions:
+        result.append({
+            "id": q.id,
+            "title": q.title,
+            "topic": q.topic,
+            "subtopic": q.subtopic,
+            "answer": q.answer,
+            "difficulty": q.difficulty,
+            "tags": q.tags or [],
+            "source": q.source or "General",
+            "created_at": q.created_at
+        })
+
+    os.makedirs("/tmp/downloads" if os.environ.get("VERCEL") else "downloads", exist_ok=True)
+    file_name = f"prepforge_reference_questions_{len(result)}_items.json"
+    file_path = f"/tmp/downloads/{file_name}" if os.environ.get("VERCEL") else f"downloads/{file_name}"
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=4, ensure_ascii=False)
+
+    if email:
+        try:
+            user = db.query(User).filter(User.email == email.strip().lower()).first()
+            if user:
+                dl = UserDownload(
+                    user_id=user.id,
+                    file_name=file_name,
+                    questions_count=len(result),
+                    created_at=datetime.utcnow().isoformat()
+                )
+                db.add(dl)
+                db.commit()
+        except Exception as err:
+            print("Failed to record download history:", err)
+
+    return FileResponse(
+        path=file_path,
+        filename=file_name,
+        media_type="application/json"
+    )
+
+
 @router.get("/user/downloads")
 def get_user_downloads(email: str, db: Session = Depends(get_db)):
     email_clean = email.strip().lower()
