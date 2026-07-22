@@ -9,12 +9,29 @@ import {
   SheetContent, 
   SheetTrigger 
 } from '@/components/ui/sheet';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SideNavBar from './side-nav-bar';
 
 export default function GlobalSearchHeader() {
   const { user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const query = searchParams.get('q') || '';
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const params = new URLSearchParams(window.location.search);
+    if (value) {
+      params.set('q', value);
+    } else {
+      params.delete('q');
+    }
+    router.push(`/explore?${params.toString()}`);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -50,6 +67,8 @@ export default function GlobalSearchHeader() {
         <input 
           ref={searchInputRef}
           type="text" 
+          value={query}
+          onChange={handleSearchChange}
           placeholder="Search questions, companies, or concepts..." 
           className="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl py-3 pl-12 pr-20 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body-md"
         />
