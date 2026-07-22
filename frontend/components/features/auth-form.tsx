@@ -89,7 +89,7 @@ export default function AuthForm() {
       } else {
         setError("Invalid email or password");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -142,7 +142,7 @@ export default function AuthForm() {
       } else {
         setError("A user with this email already exists");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -319,7 +319,7 @@ export default function AuthForm() {
 
             {/* Link to Toggle */}
             <div className="text-center pt-md border-t border-outline-variant/10 text-body-sm font-body-sm text-on-surface-variant">
-              <span>Don't have an account? </span>
+              <span>Don&apos;t have an account? </span>
               <button onClick={toggleAuth} className="text-primary hover:underline font-semibold">
                 Sign up for free
               </button>

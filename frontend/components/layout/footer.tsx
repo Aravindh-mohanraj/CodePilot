@@ -10,19 +10,21 @@ export default function Footer({ className = "", showDetails = true }: FooterPro
   return (
     <footer className={`bg-surface-container-lowest border-t border-outline-variant/10 w-full ${className}`}>
       <div className="max-w-container-max mx-auto px-lg py-3xl grid grid-cols-2 md:grid-cols-4 gap-xl">
-        <div className="col-span-2 md:col-span-1 space-y-md">
-          <div className="flex items-center gap-md mb-sm">
-            <img 
-              alt="PrepForge AI Logo" 
-              className="w-8 h-8 rounded-md" 
-              src="/images/logo.png" 
-            />
-            <span className="font-title-lg text-title-lg font-bold text-on-surface">PrepForge AI</span>
+        {showDetails && (
+          <div className="col-span-2 md:col-span-1 space-y-md">
+            <div className="flex items-center gap-md mb-sm">
+              <img 
+                alt="PrepForge AI Logo" 
+                className="w-8 h-8 rounded-md" 
+                src="/images/logo.png" 
+              />
+              <span className="font-title-lg text-title-lg font-bold text-on-surface">PrepForge AI</span>
+            </div>
+            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+              Empowering developers to conquer the hardest technical interviews with state-of-the-art AI assistance.
+            </p>
           </div>
-          <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
-            Empowering developers to conquer the hardest technical interviews with state-of-the-art AI assistance.
-          </p>
-        </div>
+        )}
         <div className="flex flex-col gap-sm">
           <h5 className="font-label-md text-label-md text-on-surface uppercase tracking-widest mb-xs">Platform</h5>
           <Link href="/explore" className="text-on-surface-variant font-body-sm hover:text-on-surface transition-colors">Explore</Link>

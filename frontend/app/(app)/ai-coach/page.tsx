@@ -14,9 +14,6 @@ import {
   History,
   Bookmark,
   TrendingUp,
-  X,
-  Loader2,
-  Inbox,
   ShieldAlert,
   RefreshCw,
   Sparkles,
@@ -36,26 +33,26 @@ interface ChatMessage {
 type DemoState = "normal" | "loading" | "empty" | "error";
 
 export default function AICoachPage() {
+  const messageIdCounter = useRef(0);
+  const getNextId = () => {
+    messageIdCounter.current += 1;
+    return `msg-${messageIdCounter.current}`;
+  };
+
   const [demoState, setDemoState] = useState<DemoState>("normal");
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: "welcome",
+      role: "ai",
+      content: "Hello! I'm your PrepForge AI Coach. How can I help you prepare today?",
+      timestamp: "12:00 PM",
+    },
+  ]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (demoState === "normal" && messages.length === 0) {
-      setMessages([
-        {
-          id: "welcome",
-          role: "ai",
-          content: "Hello! I'm your PrepForge AI Coach. How can I help you prepare today?",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ]);
-    }
-  }, [demoState, messages.length]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -69,7 +66,7 @@ export default function AICoachPage() {
     if (!text.trim() || isTyping) return;
 
     const newUserMessage: ChatMessage = {
-      id: Date.now().toString(),
+      id: getNextId(),
       role: "user",
       content: text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -106,7 +103,7 @@ export default function AICoachPage() {
   const startNewConversation = () => {
     setMessages([
       {
-        id: Date.now().toString(),
+        id: getNextId(),
         role: "ai",
         content: "Hello! I'm your PrepForge AI Coach. How can I help you prepare today?",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -140,7 +137,7 @@ export default function AICoachPage() {
       }
       
       // Basic formatting (bold, italic, list)
-      let formattedText = part
+      const formattedText = part
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/\n- (.*?)(?=\n|$)/g, '<br/>• $1');
@@ -221,7 +218,7 @@ export default function AICoachPage() {
                 </div>
                 <h2 className="text-headline-sm mb-2">Connection Error</h2>
                 <p className="text-body-md text-on-surface-variant max-w-md mb-6">
-                  We couldn't reach the AI service. Please check your connection and try again.
+                  We couldn&apos;t reach the AI service. Please check your connection and try again.
                 </p>
                 <button
                   onClick={() => setDemoState("normal")}

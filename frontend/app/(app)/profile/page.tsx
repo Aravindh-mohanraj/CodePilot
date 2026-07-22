@@ -6,18 +6,14 @@ import {
   Sparkles, 
   Target, 
   CheckCircle2, 
-  HelpCircle,
-  Inbox,
-  ShieldAlert,
-  RefreshCw,
-  Award,
-  Zap,
-  Gauge,
-  Terminal,
-  Activity,
-  Calendar,
-  AlertTriangle,
-  FolderOpen
+  Inbox, 
+  ShieldAlert, 
+  RefreshCw, 
+  Award, 
+  Zap, 
+  Gauge, 
+  Terminal, 
+  AlertTriangle 
 } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import GlassCard from '@/components/cards/glass-card';
@@ -140,7 +136,7 @@ export default function ProfilePage() {
       ) : (
         <>
           {/* Section 1: Profile Header Card */}
-          <ProfileHeader user={MOCK_USER} />
+          <ProfileHeader user={user || MOCK_USER} />
 
           {/* Section 2: Overall Statistics Row */}
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">

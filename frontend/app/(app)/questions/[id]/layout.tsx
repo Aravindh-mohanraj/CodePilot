@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Bolt } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 
@@ -12,7 +11,6 @@ export default function IDELayout({
   children: React.ReactNode;
 }) {
   const { user } = useAuth();
-  const pathname = usePathname();
 
   const userInitials = user 
     ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() 

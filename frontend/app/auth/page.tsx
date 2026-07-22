@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 import AuthForm from '@/components/features/auth-form';
-import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 
 export const metadata = {
@@ -74,7 +73,7 @@ export default function AuthPage() {
 
         {/* Footer info below card */}
         <div className="mt-xl text-center text-xs text-on-surface-variant/40 max-w-sm">
-          By signing in, you agree to PrepForge AI's standard security policies and local data storage terms.
+          By signing in, you agree to PrepForge AI&apos;s standard security policies and local data storage terms.
         </div>
       </section>
     </main>

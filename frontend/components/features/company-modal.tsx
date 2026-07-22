@@ -4,15 +4,10 @@ import React, { useState } from 'react';
 import { Company } from '@/types';
 import { 
   X, 
-  MapPin, 
-  BookOpen, 
   Play, 
   Building2, 
-  ChevronRight, 
   Lock, 
-  Sparkles, 
-  HelpCircle,
-  Clock
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -272,7 +267,7 @@ export default function CompanyModal({ company, isOpen, onClose }: CompanyModalP
                       className="p-md bg-surface-container-high/40 border border-outline-variant/15 rounded-xl italic text-sm text-on-surface-variant leading-relaxed relative pl-8"
                     >
                       <Sparkles className="w-4 h-4 text-primary absolute left-3 top-4 shrink-0" />
-                      "{exp}"
+                      &ldquo;{exp}&rdquo;
                     </div>
                   ))}
                 </div>

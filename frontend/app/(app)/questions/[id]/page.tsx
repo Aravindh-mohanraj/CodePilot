@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   ChevronRight, Bookmark, EyeOff, Settings, Maximize2, Bot, 
   Send, X, Play, Upload, ArrowLeft, Sparkles, Lightbulb, 
@@ -33,7 +33,7 @@ interface AiMessage {
 }
 
 export default function QuestionSolverPage({ params }: QuestionSolverPageProps) {
-  const [question, setQuestion] = useState(MOCK_QUESTIONS[0]);
+  const question = MOCK_QUESTIONS.find(q => q.id === params.id) || MOCK_QUESTIONS[0];
   const [code, setCode] = useState<string>(`class Solution:\n    def trap(self, height: List[int]) -> int:\n        # Initialize pointers\n        left, right = 0, len(height) - 1\n        left_max, right_max = 0, 0\n        water = 0\n        \n        while left < right:\n            if height[left] < height[right]:\n                if height[left] >= left_max:\n                    left_max = height[left]\n                else:\n                    water += left_max - height[left]\n                left += 1\n            else:\n                if height[right] >= right_max:\n                    right_max = height[right]\n                else:\n                    water += right_max - height[right]\n                right -= 1\n        \n        return water`);
   const [language, setLanguage] = useState('python');
   const theme = 'vs-dark';
@@ -45,11 +45,6 @@ export default function QuestionSolverPage({ params }: QuestionSolverPageProps) 
     { sender: 'ai', text: 'Welcome! I am your AI assistant. How can I help you with this problem?' }
   ]);
   const [aiInput, setAiInput] = useState('');
-
-  useEffect(() => {
-    const q = MOCK_QUESTIONS.find(q => q.id === params.id) || MOCK_QUESTIONS[0];
-    setQuestion(q);
-  }, [params.id]);
 
   const handleRun = async () => {
     setExecutionResult({ status: 'Running...' });

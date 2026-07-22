@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { 
@@ -16,9 +16,7 @@ import {
   Terminal,
   ShieldAlert,
   Inbox,
-  RefreshCw,
-  TrendingUp,
-  LayoutDashboard
+  RefreshCw
 } from 'lucide-react';
 import GlassCard from '@/components/cards/glass-card';
 import StatCard from '@/components/cards/stat-card';
@@ -116,7 +114,7 @@ export default function DashboardPage() {
           </div>
           <h3 className="font-headline-sm text-headline-sm text-on-surface">No Practice Data Found</h3>
           <p className="text-body-sm text-on-surface-variant leading-relaxed">
-            Welcome to PrepForge AI! You haven't solved any coding problems yet. Access the explore panel to kickstart your training.
+            Welcome to PrepForge AI! You haven&apos;t solved any coding problems yet. Access the explore panel to kickstart your training.
           </p>
           <Link href="/explore">
             <button className="bg-primary text-on-primary font-bold px-xl py-lg rounded-xl flex items-center gap-sm active:scale-95 transition-all">

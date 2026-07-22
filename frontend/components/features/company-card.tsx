@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Company } from '@/types';
-import GlassCard from '../cards/glass-card';
 
 interface CompanyCardProps {
   company: Company;

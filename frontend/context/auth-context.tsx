@@ -21,22 +21,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize and check local storage or set default user for quick demo
   useEffect(() => {
-    const storedUser = localStorage.getItem('prepforge_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        localStorage.removeItem('prepforge_user');
+    const checkAuth = () => {
+      const storedUser = localStorage.getItem('prepforge_user');
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch {
+          localStorage.removeItem('prepforge_user');
+        }
+      } else {
+        // For Demo/Hackathon, start as authenticated by default if no clear logout has happened
+        setUser(MOCK_USER);
+        localStorage.setItem('prepforge_user', JSON.stringify(MOCK_USER));
       }
-    } else {
-      // For Demo/Hackathon, start as authenticated by default if no clear logout has happened,
-      // but let's allow explicit auth.
-      // Let's set the mock user as default so the user is instantly logged in on first visit,
-      // but can still interact with the auth page.
-      setUser(MOCK_USER);
-      localStorage.setItem('prepforge_user', JSON.stringify(MOCK_USER));
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+
+    const timer = setTimeout(checkAuth, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const login = async (email: string): Promise<boolean> => {
@@ -53,7 +55,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return true;
   };
 
-  const signup = async (firstName: string, lastName: string, email: string): Promise<boolean> => {
+  const signup = async (firstName: string, lastName: string, _email: string): Promise<boolean> => {
+    if (_email) {
+      // no-op
+    }
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const newUser = {

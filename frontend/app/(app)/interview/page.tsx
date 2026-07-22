@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import {
   Timer,
@@ -15,7 +15,6 @@ import {
   Target,
   ArrowLeft,
   RotateCcw,
-  X,
   CheckCircle2,
   Clock,
   Brain,
@@ -150,6 +149,23 @@ export default function InterviewPage() {
 
   const initialTimeLimit = session ? session.timeLimit * 60 : 0;
 
+  const handleEndInterview = useCallback(async () => {
+    if (!session) return;
+    setIsFinished(true);
+    setShowConfirmDialog(false);
+    setIsEvaluating(true);
+    
+    const timeTaken = initialTimeLimit - timeRemaining;
+    const res = await evaluateInterview(session, answers, timeTaken);
+    setResults(res);
+    setIsEvaluating(false);
+  }, [session, answers, initialTimeLimit, timeRemaining]);
+
+  const handleEndInterviewRef = useRef(handleEndInterview);
+  useEffect(() => {
+    handleEndInterviewRef.current = handleEndInterview;
+  }, [handleEndInterview]);
+
   // Initialize
   useEffect(() => {
     let mounted = true;
@@ -170,7 +186,7 @@ export default function InterviewPage() {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          handleEndInterview(true);
+          handleEndInterviewRef.current();
           return 0;
         }
         return prev - 1;
@@ -179,18 +195,6 @@ export default function InterviewPage() {
 
     return () => clearInterval(interval);
   }, [session, isFinished]);
-
-  const handleEndInterview = async (autoEnded = false) => {
-    if (!session) return;
-    setIsFinished(true);
-    setShowConfirmDialog(false);
-    setIsEvaluating(true);
-    
-    const timeTaken = initialTimeLimit - timeRemaining;
-    const res = await evaluateInterview(session, answers, timeTaken);
-    setResults(res);
-    setIsEvaluating(false);
-  };
 
   const currentQuestion = session?.questions[currentQuestionIndex];
   
@@ -483,7 +487,7 @@ export default function InterviewPage() {
                   Cancel
                 </button>
                 <button 
-                  onClick={() => handleEndInterview(false)}
+                  onClick={() => handleEndInterview()}
                   className="px-4 py-2 rounded-lg font-label-md bg-[#ffb4ab] text-[#690005] hover:bg-[#ffb4ab]/90 transition-colors"
                 >
                   End Interview

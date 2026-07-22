@@ -6,7 +6,6 @@ import {
   Search, 
   Building2, 
   SlidersHorizontal, 
-  ArrowUpDown,
   Inbox, 
   ShieldAlert, 
   Loader2, 
@@ -177,7 +176,7 @@ function CompaniesPageContent() {
         <div className="flex items-center gap-xs text-xs text-on-surface-variant bg-surface-container px-md py-sm rounded-lg border border-white/5 w-fit">
           <Search className="w-4 h-4" />
           <span>Searching companies for: </span>
-          <span className="text-primary font-bold">"{searchQuery}"</span>
+          <span className="text-primary font-bold">&ldquo;{searchQuery}&rdquo;</span>
           <button 
             onClick={() => router.push('/companies')}
             className="text-error font-bold ml-md hover:underline"
@@ -215,7 +214,7 @@ function CompaniesPageContent() {
         <div className="relative md:ml-auto min-w-[160px]">
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
             className="appearance-none bg-surface-container border border-outline-variant/30 rounded-xl py-2 pl-lg pr-10 text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-full font-label-md text-label-md text-xs cursor-pointer text-on-surface font-semibold"
           >
             <option value="Popular">Sort: Popularity</option>
@@ -236,7 +235,7 @@ function CompaniesPageContent() {
             </div>
             <h4 className="font-headline-sm text-headline-sm text-on-surface">No Companies Match</h4>
             <p className="text-body-sm text-on-surface-variant mt-xs max-w-sm">
-              We couldn't find any companies matching your active search value or tier filters.
+              We couldn&apos;t find any companies matching your active search value or tier filters.
             </p>
           </div>
         ) : (

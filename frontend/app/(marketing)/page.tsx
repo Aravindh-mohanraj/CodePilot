@@ -81,7 +81,7 @@ export default function LandingPage() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as any }
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
     }
   };
 
@@ -237,7 +237,7 @@ export default function LandingPage() {
               Engineered for <span className="text-primary">Performance</span>
             </h2>
             <p className="text-on-surface-variant font-body-md max-w-2xl mx-auto text-lg leading-relaxed">
-              Our specialized AI engine doesn't just scrape the web—it constructs unique challenges and provides deep architectural feedback.
+              Our specialized AI engine doesn&apos;t just scrape the web—it constructs unique challenges and provides deep architectural feedback.
             </p>
           </motion.div>
 

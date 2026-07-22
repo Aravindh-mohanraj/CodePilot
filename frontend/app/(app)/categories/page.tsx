@@ -1,19 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Search, 
-  Filter, 
-  ArrowUpDown, 
   Inbox, 
   ShieldAlert, 
-  Loader2, 
   Plus, 
   Flame, 
-  Users,
-  RefreshCw,
-  LayoutGrid
+  RefreshCw
 } from 'lucide-react';
 import GlassCard from '@/components/cards/glass-card';
 import CategoryCard from '@/components/features/category-card';
@@ -200,7 +195,7 @@ export default function CategoriesPage() {
             </div>
             <h4 className="font-headline-sm text-headline-sm text-on-surface">No Categories Found</h4>
             <p className="text-body-sm text-on-surface-variant mt-xs max-w-sm">
-              We couldn't find any study categories matching your search query or level filters.
+              We couldn&apos;t find any study categories matching your search query or level filters.
             </p>
             <button 
               onClick={() => { setSearchQuery(''); setLevelFilter('All'); }}
@@ -226,7 +221,7 @@ export default function CategoriesPage() {
               <div className="space-y-sm">
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">Request New Category</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant text-sm max-w-xs leading-relaxed">
-                  Can't find a specific topic? Our AI can generate custom study paths for any niche technology stack.
+                  Can&apos;t find a specific topic? Our AI can generate custom study paths for any niche technology stack.
                 </p>
               </div>
             </div>

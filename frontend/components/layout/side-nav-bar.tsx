@@ -8,14 +8,12 @@ import {
   Compass, 
   Building2, 
   Grid, 
-  Bookmark, 
   Bot, 
   User, 
   Settings, 
   HelpCircle,
   Zap
 } from 'lucide-react';
-import { useAuth } from '@/context/auth-context';
 
 interface SideNavBarProps {
   className?: string;
@@ -24,7 +22,6 @@ interface SideNavBarProps {
 
 export default function SideNavBar({ className = "", onLinkClick }: SideNavBarProps) {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   const primaryNavItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -57,7 +54,7 @@ export default function SideNavBar({ className = "", onLinkClick }: SideNavBarPr
               key={item.name}
               href={item.href}
               onClick={onLinkClick}
-              className={`flex items-center gap-md p-md mx-sm rounded-lg transition-all duration-200 group ${
+              className={`flex items-center gap-md p-md mx-sm rounded-lg transition-all duration-200 group focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
                 active
                   ? 'bg-primary-container text-on-primary-container shadow-lg shadow-primary/10'
                   : 'text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface'
@@ -72,8 +69,8 @@ export default function SideNavBar({ className = "", onLinkClick }: SideNavBarPr
 
       {/* Action / Footer Section */}
       <div className="px-md mt-auto pt-xl border-t border-outline-variant/10 space-y-md">
-        <Link href="/explore" onClick={onLinkClick}>
-          <button className="w-full py-md bg-primary text-on-primary-container font-label-md text-label-md rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/10 pulse-glow-effect flex items-center justify-center gap-xs">
+        <Link href="/explore" onClick={onLinkClick} tabIndex={-1}>
+          <button className="w-full py-md bg-primary text-on-primary-container font-label-md text-label-md rounded-lg font-bold hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/10 pulse-glow-effect flex items-center justify-center gap-xs focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none">
             <Zap className="w-4 h-4 fill-current" />
             Start Practice
           </button>
@@ -82,7 +79,7 @@ export default function SideNavBar({ className = "", onLinkClick }: SideNavBarPr
           <Link
             href="#"
             onClick={onLinkClick}
-            className="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all rounded-lg"
+            className="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all rounded-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             <Settings className="w-5 h-5 text-on-surface-variant" />
             <span className="font-label-md text-label-md">Settings</span>
@@ -90,7 +87,7 @@ export default function SideNavBar({ className = "", onLinkClick }: SideNavBarPr
           <Link
             href="#"
             onClick={onLinkClick}
-            className="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all rounded-lg"
+            className="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all rounded-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
           >
             <HelpCircle className="w-5 h-5 text-on-surface-variant" />
             <span className="font-label-md text-label-md">Support</span>

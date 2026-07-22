@@ -16,14 +16,8 @@ import {
   Plus
 } from 'lucide-react';
 import { Category } from '@/types';
-import GlassCard from '../cards/glass-card';
 
-interface CategoryCardProps {
-  category: Category;
-  onClick?: () => void;
-}
-
-const ICON_MAP: Record<string, React.ComponentType<any>> = {
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   "arrays": TableProperties,
   "strings": Type,
   "linked-lists": Link2,
@@ -37,6 +31,11 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   "databases": Database,
   "computer-networks": Globe
 };
+
+interface CategoryCardProps {
+  category: Category;
+  onClick?: () => void;
+}
 
 export default function CategoryCard({ category, onClick }: CategoryCardProps) {
   const IconComponent = ICON_MAP[category.id] || Plus;

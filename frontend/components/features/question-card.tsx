@@ -2,10 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/context/auth-context';
 import { Question } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Bookmark, ChevronRight, Star } from 'lucide-react';
+import { Bookmark, ChevronRight } from 'lucide-react';
 
 interface QuestionCardProps {
   question: Question;
@@ -49,7 +48,8 @@ export default function QuestionCard({
           id={`select-${question.id}`} 
           checked={isSelected}
           onCheckedChange={onSelectToggle}
-          className="border-outline-variant/60 data-[state=checked]:bg-primary data-[state=checked]:text-on-primary-container h-5 w-5 rounded cursor-pointer"
+          className="border-outline-variant/60 data-[state=checked]:bg-primary data-[state=checked]:text-on-primary-container h-5 w-5 rounded cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+          aria-label={`Select question ${question.title}`}
         />
       </div>
 
@@ -65,7 +65,7 @@ export default function QuestionCard({
               #{question.id}
             </span>
           )}
-          <Link href={`/questions/${question.id}`}>
+          <Link href={`/questions/${question.id}`} className="focus-visible:ring-2 focus-visible:ring-primary rounded focus-visible:outline-none">
             <h3 className="font-title-lg text-title-lg font-bold text-on-surface group-hover:text-primary transition-colors truncate">
               {question.title}
             </h3>
@@ -109,19 +109,20 @@ export default function QuestionCard({
           {/* Bookmark Trigger */}
           <button 
             onClick={onBookmarkToggle}
-            className={`p-2 rounded-xl border transition-colors ${
+            className={`p-2 rounded-xl border transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
               isBookmarked 
                 ? 'bg-primary/20 border-primary text-primary' 
                 : 'bg-surface-container border-outline-variant/30 text-on-surface-variant hover:text-on-surface'
             }`}
+            aria-label={isBookmarked ? `Remove bookmark for ${question.title}` : `Bookmark ${question.title}`}
           >
             <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
           </button>
 
           {/* Action trigger */}
-          <Link href={`/questions/${question.id}`}>
+          <Link href={`/questions/${question.id}`} tabIndex={-1}>
             <button 
-              className={`px-xl py-3 rounded-xl font-bold font-label-md text-label-md flex items-center gap-xs group/btn active:scale-95 transition-all shadow-lg ${
+              className={`px-xl py-3 rounded-xl font-bold font-label-md text-label-md flex items-center gap-xs group/btn active:scale-95 transition-all shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
                 isHardOrRecommended
                   ? 'bg-primary text-on-primary-container hover:brightness-110 shadow-primary/10'
                   : 'bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-on-primary-container shadow-primary/5'

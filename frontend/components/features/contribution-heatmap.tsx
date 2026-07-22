@@ -12,6 +12,11 @@ interface HeatmapDay {
 export default function ContributionHeatmap() {
   // Generate mock year activity data (365 days)
   const heatmapData = useMemo(() => {
+    const seededRandom = (seed: number) => {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    };
+
     const days: HeatmapDay[] = [];
     const today = new Date();
     
@@ -24,16 +29,19 @@ export default function ContributionHeatmap() {
       const dayOfWeek = date.getDay();
       let count = 0;
       
+      const rand1 = seededRandom(i + 1);
+      const rand2 = seededRandom(i + 2);
+
       // Candidates solve more on weekdays, less on weekends
       if (dayOfWeek !== 0 && dayOfWeek !== 6) {
         // 70% chance of solving on weekdays
-        if (Math.random() < 0.7) {
-          count = Math.floor(Math.random() * 6); // 0 to 5 contributions
+        if (rand1 < 0.7) {
+          count = Math.floor(rand2 * 6); // 0 to 5 contributions
         }
       } else {
         // 20% chance of solving on weekends
-        if (Math.random() < 0.2) {
-          count = Math.floor(Math.random() * 3);
+        if (rand1 < 0.2) {
+          count = Math.floor(rand2 * 3);
         }
       }
 

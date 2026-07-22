@@ -1,21 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { 
   Inbox, 
   ShieldAlert, 
   Loader2, 
   RefreshCw,
-  Search,
-  BookOpen
+  Search
 } from 'lucide-react';
 import GlassCard from '@/components/cards/glass-card';
 import QuestionCard from '@/components/features/question-card';
 import FilterPanel from '@/components/features/filter-panel';
 import ExportToolbar from '@/components/features/export-toolbar';
 import { MOCK_QUESTIONS } from '@/lib/constants';
-import { Question } from '@/types';
 
 function ExplorePageContent() {
   const searchParams = useSearchParams();
@@ -219,7 +217,7 @@ function ExplorePageContent() {
         <div className="flex items-center gap-xs text-xs text-on-surface-variant bg-surface-container px-md py-sm rounded-lg border border-white/5 w-fit">
           <Search className="w-4 h-4" />
           <span>Search results for: </span>
-          <span className="text-primary font-bold">"{searchQuery}"</span>
+          <span className="text-primary font-bold">&ldquo;{searchQuery}&rdquo;</span>
           <button 
             onClick={() => router.push('/explore')}
             className="text-error font-bold ml-md hover:underline"
@@ -274,7 +272,7 @@ function ExplorePageContent() {
             </div>
             <h4 className="font-bold text-on-surface">No Questions Found</h4>
             <p className="text-xs text-on-surface-variant mt-1 max-w-sm">
-              We couldn't find any challenges matching your active filters. Try adjusting search values.
+              We couldn&apos;t find any challenges matching your active filters. Try adjusting search values.
             </p>
           </div>
         )}

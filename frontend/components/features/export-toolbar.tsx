@@ -39,7 +39,8 @@ export default function ExportToolbar({
             id="select-all-toolbar"
             checked={allSelected}
             onCheckedChange={handleCheckboxChange}
-            className="border-outline-variant/60 data-[state=checked]:bg-primary data-[state=checked]:text-on-primary-container h-5 w-5 rounded"
+            className="border-outline-variant/60 data-[state=checked]:bg-primary data-[state=checked]:text-on-primary-container h-5 w-5 rounded cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+            aria-label="Select all questions"
           />
           <span className="text-label-md font-medium text-on-surface-variant group-hover:text-on-surface text-sm">
             {allSelected ? "Deselect All" : "Select All"}
@@ -59,7 +60,7 @@ export default function ExportToolbar({
         <button 
           onClick={onExportJSON}
           disabled={selectedCount === 0}
-          className={`flex items-center gap-xs px-md py-2 rounded-xl border font-label-md font-bold text-sm transition-all active:scale-95 duration-200 cursor-pointer ${
+          className={`flex items-center gap-xs px-md py-2 rounded-xl border font-label-md font-bold text-sm transition-all active:scale-95 duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
             selectedCount > 0
               ? 'bg-primary/10 text-primary border-primary/30 hover:bg-primary hover:text-on-primary-container shadow-md shadow-primary/5'
               : 'bg-surface-container border-outline-variant/20 text-on-surface-variant/40 cursor-not-allowed opacity-50'
