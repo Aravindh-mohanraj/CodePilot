@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>AI Interview Questions</title>
+</head>
+
+<body>
+
+<h1>Interview Questions</h1>
+
+<div id="questions"></div>
+
+<button onclick="downloadJSON()">
+Download Selected Questions
+</button>
+
+
+<script>
+
+let selected = [];
+
+
+fetch("http://127.0.0.1:8000/questions")
+.then(response => response.json())
+.then(data => {
+
+    let html="";
+
+    data.forEach(q=>{
+
+        html += `
+        <div>
+
+        <input
+        type="checkbox"
+        value="${q.id}"
+        onchange="selectQuestion(this)"
+        >
+
+        ${q.title}
+        (${q.difficulty})
+
+        </div>
+        `;
+
+    });
+
+
+    document.getElementById("questions").innerHTML=html;
+
+});
+
+
+function selectQuestion(box){
+
+    let id=parseInt(box.value);
+
+
+    if(box.checked)
+    {
+        selected.push(id);
+    }
+    else
+    {
+        selected = selected.filter(x=>x!==id);
+    }
+
+}
+
+
+
+function downloadJSON(){
+
+fetch("http://127.0.0.1:8000/download",
+{
+    method:"POST",
+
+    headers:{
+        "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify(selected)
+
+})
+
+.then(response=>response.blob())
+
+.then(blob=>{
+
+    let url=window.URL.createObjectURL(blob);
+
+    let a=document.createElement("a");
+
+    a.href=url;
+
+    a.download="questions.json";
+
+    a.click();
+
+});
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

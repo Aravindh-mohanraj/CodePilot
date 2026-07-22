@@ -1,0 +1,473 @@
+[
+  {
+    "id": 1,
+    "title": "Two Sum",
+    "type": "Programming",
+    "category": "Arrays / Hashing",
+    "difficulty": "Easy",
+    "companies": [
+      "Amazon",
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 2,
+    "title": "Best Time to Buy and Sell Stock",
+    "type": "Programming",
+    "category": "Arrays",
+    "difficulty": "Easy",
+    "companies": [
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 3,
+    "title": "Valid Parentheses",
+    "type": "Programming",
+    "category": "Stack",
+    "difficulty": "Easy",
+    "companies": [
+      "Microsoft"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 4,
+    "title": "Merge Two Sorted Lists",
+    "type": "Programming",
+    "category": "Linked List",
+    "difficulty": "Easy",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 5,
+    "title": "Binary Search",
+    "type": "Programming",
+    "category": "Binary Search",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 6,
+    "title": "Longest Common Subsequence",
+    "type": "Programming",
+    "category": "Dynamic Programming",
+    "difficulty": "Medium",
+    "companies": [
+      "Microsoft"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 7,
+    "title": "Coin Change",
+    "type": "Programming",
+    "category": "Dynamic Programming",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 8,
+    "title": "House Robber",
+    "type": "Programming",
+    "category": "Dynamic Programming",
+    "difficulty": "Medium",
+    "companies": [
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 9,
+    "title": "Climbing Stairs",
+    "type": "Programming",
+    "category": "Dynamic Programming",
+    "difficulty": "Easy",
+    "companies": [
+      "Apple"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 10,
+    "title": "Longest Increasing Subsequence",
+    "type": "Programming",
+    "category": "Dynamic Programming",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 11,
+    "title": "N-Queens",
+    "type": "Programming",
+    "category": "Backtracking",
+    "difficulty": "Hard",
+    "companies": [
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 12,
+    "title": "Subsets",
+    "type": "Programming",
+    "category": "Backtracking",
+    "difficulty": "Medium",
+    "companies": [
+      "Meta"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 13,
+    "title": "Combination Sum",
+    "type": "Programming",
+    "category": "Backtracking",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 14,
+    "title": "Merge Intervals",
+    "type": "Programming",
+    "category": "Greedy",
+    "difficulty": "Medium",
+    "companies": [
+      "Microsoft"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 15,
+    "title": "Jump Game",
+    "type": "Programming",
+    "category": "Greedy",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 16,
+    "title": "Meeting Rooms",
+    "type": "Programming",
+    "category": "Greedy",
+    "difficulty": "Easy",
+    "companies": [
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 17,
+    "title": "Kth Largest Element in an Array",
+    "type": "Programming",
+    "category": "Divide & Conquer / Heap",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 18,
+    "title": "Median of Two Sorted Arrays",
+    "type": "Programming",
+    "category": "Divide & Conquer",
+    "difficulty": "Hard",
+    "companies": [
+      "Google"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 19,
+    "title": "Container With Most Water",
+    "type": "Programming",
+    "category": "Two Pointers",
+    "difficulty": "Medium",
+    "companies": [
+      "Meta"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 20,
+    "title": "3Sum",
+    "type": "Programming",
+    "category": "Two Pointers",
+    "difficulty": "Medium",
+    "companies": [
+      "Amazon"
+    ],
+    "statement": "",
+    "examples": [],
+    "constraints": [],
+    "python_solution": "",
+    "java_solution": "",
+    "test_cases": [],
+    "explanation": ""
+  },
+  {
+    "id": 21,
+    "title": "What is Machine Learning?",
+    "type": "Non-Programming",
+    "category": "Machine Learning",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 22,
+    "title": "Explain Supervised vs Unsupervised Learning",
+    "type": "Non-Programming",
+    "category": "Machine Learning",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 23,
+    "title": "What is Overfitting and how can it be prevented?",
+    "type": "Non-Programming",
+    "category": "Machine Learning",
+    "difficulty": "Medium",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 24,
+    "title": "Explain Gradient Descent.",
+    "type": "Non-Programming",
+    "category": "Machine Learning",
+    "difficulty": "Medium",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 25,
+    "title": "What is a Process and a Thread?",
+    "type": "Non-Programming",
+    "category": "Operating Systems",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 26,
+    "title": "Explain Deadlock and its prevention methods.",
+    "type": "Non-Programming",
+    "category": "Operating Systems",
+    "difficulty": "Medium",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 27,
+    "title": "What is Paging in Operating Systems?",
+    "type": "Non-Programming",
+    "category": "Operating Systems",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 28,
+    "title": "Difference between SQL and NoSQL.",
+    "type": "Non-Programming",
+    "category": "DBMS",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 29,
+    "title": "Explain Normalization in DBMS.",
+    "type": "Non-Programming",
+    "category": "DBMS",
+    "difficulty": "Medium",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  },
+  {
+    "id": 30,
+    "title": "Explain the TCP/IP Model.",
+    "type": "Non-Programming",
+    "category": "Computer Networks",
+    "difficulty": "Easy",
+    "companies": [
+      "General"
+    ],
+    "question": "",
+    "answer": "",
+    "explanation": ""
+  }
+]
