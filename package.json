@@ -1,5 +1,8 @@
 {
-  "dependencies": {
-    "jsdom": "^29.1.1"
+  "name": "codepilot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build"
   }
 }
