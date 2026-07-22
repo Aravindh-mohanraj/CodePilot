@@ -7,6 +7,8 @@ import GlobalSearchHeader from '@/components/layout/global-search-header';
 import MobileBottomNav from '@/components/layout/mobile-bottom-nav';
 import Footer from '@/components/layout/footer';
 
+import ProtectedRoute from '@/components/layout/protected-route';
+
 export default function AppLayout({
   children,
 }: {
@@ -15,11 +17,9 @@ export default function AppLayout({
   const pathname = usePathname();
   const isQuestionIDE = pathname.includes('/questions/');
 
-  if (isQuestionIDE) {
-    return <div className="min-h-screen bg-background text-foreground flex flex-col">{children}</div>;
-  }
-
-  return (
+  const layoutContent = isQuestionIDE ? (
+    <div className="min-h-screen bg-background text-foreground flex flex-col">{children}</div>
+  ) : (
     <div className="flex min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Desktop Sidebar Navigation */}
       <SideNavBar className="fixed left-0 top-0 h-full w-64 hidden md:flex z-40" />
@@ -41,4 +41,6 @@ export default function AppLayout({
       <MobileBottomNav />
     </div>
   );
+
+  return <ProtectedRoute>{layoutContent}</ProtectedRoute>;
 }
