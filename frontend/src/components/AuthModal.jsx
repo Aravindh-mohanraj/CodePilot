@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const GOOGLE_CLIENT_ID = "476202653996-hqj4srs8bvd0v4vpv6jmtnqj5rcujr85.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "476202653996-udj06gl48d36d0fbkc5i3dojl2hf5c9o.apps.googleusercontent.com";
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSuccess }) {
   const [mode, setMode] = useState(initialMode);
