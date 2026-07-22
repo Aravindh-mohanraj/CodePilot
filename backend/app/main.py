@@ -16,16 +16,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print("Database initialization notice:", e)
+
 app.include_router(router)
 
-# Resolve path to the frontend build directory
-FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "frontend", "dist")
-FRONTEND_DIR = os.path.abspath(FRONTEND_DIR)
+# Resolve path to the frontend build directory with Vercel serverless fallbacks
+possible_dirs = [
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist")),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")),
+    os.path.abspath(os.path.join(os.getcwd(), "frontend", "dist")),
+    os.path.abspath(os.path.join(os.getcwd(), "dist")),
+]
+
+FRONTEND_DIR = possible_dirs[0]
+for p in possible_dirs:
+    if os.path.isdir(p) and os.path.isfile(os.path.join(p, "index.html")):
+        FRONTEND_DIR = p
+        break
 
 # Serve frontend static assets (JS, CSS, images)
-if os.path.isdir(os.path.join(FRONTEND_DIR, "assets")):
-    app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
+assets_dir = os.path.join(FRONTEND_DIR, "assets")
+if os.path.isdir(assets_dir):
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
 # Serve other static files in dist root (favicon, icons, etc.)
 STATIC_FILES_IN_DIST = ["favicon.svg", "icons.svg"]
@@ -37,10 +52,9 @@ for fname in STATIC_FILES_IN_DIST:
             return FileResponse(filepath)
 
 # Catch-all: serve the React SPA index.html for any unmatched route
-# This must come AFTER all API routes to avoid shadowing them
 @app.get("/{full_path:path}")
 def serve_spa(full_path: str):
     index_path = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.isfile(index_path):
         return FileResponse(index_path)
-    return {"message": "CodePilot API is running. Frontend not built yet — run 'npm run build' in the frontend directory."}
+    return {"message": "CodePilot API is running."}
