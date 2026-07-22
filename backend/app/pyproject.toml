@@ -1,2 +1,10 @@
-[tool.vercel]
-entrypoint = "main:app"
+[project]
+name = "codepilot-backend"
+version = "0.1.0"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy",
+    "pydantic",
+    "databases"
+]
