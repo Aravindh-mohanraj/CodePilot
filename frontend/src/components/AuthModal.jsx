@@ -204,7 +204,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
           type="button"
           onClick={handleGoogleSignIn}
           disabled={submitting}
-          className="w-full mb-5 py-3 px-4 bg-[#1f1f27] hover:bg-[#2a2a35] border border-[#464554]/60 rounded-xl text-sm font-semibold text-[#e4e1ed] transition-all flex items-center justify-center gap-3 shadow-md active:scale-[0.98] disabled:opacity-50"
+          className="w-full mb-3 py-3 px-4 bg-[#1f1f27] hover:bg-[#2a2a35] border border-[#464554]/60 rounded-xl text-sm font-semibold text-[#e4e1ed] transition-all flex items-center justify-center gap-3 shadow-md active:scale-[0.98] disabled:opacity-50"
         >
           {submitting ? (
             <div className="w-5 h-5 border-2 border-[#6001d1] border-t-transparent rounded-full animate-spin" />
@@ -219,9 +219,20 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
           <span>Continue with Google</span>
         </button>
 
+        {/* 1-Click Guest Access Button */}
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={submitting}
+          className="w-full mb-5 py-3 px-4 bg-gradient-to-r from-[#6001d1]/30 to-[#8083ff]/30 hover:from-[#6001d1]/50 hover:to-[#8083ff]/50 border border-[#6001d1]/60 rounded-xl text-sm font-bold text-[#c0c1ff] transition-all flex items-center justify-center gap-2 shadow-md active:scale-[0.98]"
+        >
+          <span className="material-symbols-outlined text-base">rocket_launch</span>
+          <span>Instant Guest Access (No Sign-Up)</span>
+        </button>
+
         <div className="flex items-center gap-3 mb-5">
           <div className="h-px bg-[#464554]/40 flex-1"></div>
-          <span className="text-[10px] text-[#908fa0] uppercase tracking-wider font-mono">or email</span>
+          <span className="text-[10px] text-[#908fa0] uppercase tracking-wider font-mono">or email credentials</span>
           <div className="h-px bg-[#464554]/40 flex-1"></div>
         </div>
 

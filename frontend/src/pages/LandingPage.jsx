@@ -47,6 +47,27 @@ export default function LandingPage() {
             <span>Open AI Solver</span>
             <span className="material-symbols-outlined text-sm">code</span>
           </Link>
+          <Link
+            to="/dashboard"
+            onClick={() => {
+              if (!localStorage.getItem('prepforge_user')) {
+                const guestUser = {
+                  id: 999,
+                  name: 'Guest Developer',
+                  email: 'guest.developer@code-pilot.com',
+                  avatar: 'https://ui-avatars.com/api/?name=Guest+Developer&background=6001d1&color=fff&bold=true&size=128',
+                  is_verified: 'true'
+                };
+                localStorage.setItem('prepforge_user', JSON.stringify(guestUser));
+                localStorage.setItem('prepforge_token', 'guest_demo_token');
+                window.dispatchEvent(new Event('storage'));
+              }
+            }}
+            className="px-6 py-3.5 bg-[#6001d1]/20 hover:bg-[#6001d1]/30 border border-[#6001d1]/50 text-[#c0c1ff] font-semibold rounded-2xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2 text-sm"
+          >
+            <span className="material-symbols-outlined text-sm">account_circle</span>
+            <span>Try as Guest</span>
+          </Link>
         </div>
 
         {/* Feature Cards Showcase Container */}
