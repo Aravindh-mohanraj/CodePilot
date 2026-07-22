@@ -30,7 +30,7 @@ export interface Category {
   id: string; // e.g. "dynamic-programming"
   name: string; // e.g. "Dynamic Programming"
   description: string;
-  difficultyTag: 'Advanced' | 'Design' | 'Fundamentals' | 'High Failure Rate' | 'SQL/NoSQL' | 'Web Tech' | 'Soft Skills';
+  difficultyTag: string;
   difficultyColor: string; // e.g. "text-tertiary bg-tertiary/10"
   icon: string; // Material symbol icon name or Lucide equivalent
   questionsSolved: number;

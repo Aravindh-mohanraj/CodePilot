@@ -165,6 +165,72 @@ export const MOCK_COMPANIES: Company[] = [
 
 export const MOCK_CATEGORIES: Category[] = [
   {
+    id: "arrays",
+    name: "Arrays",
+    description: "Master contiguous data blocks, multi-dimensional grids, and sliding window operations.",
+    difficultyTag: "Beginner",
+    difficultyColor: "bg-green-500/10 text-green-400",
+    icon: "table_rows",
+    questionsSolved: 40,
+    totalQuestions: 50,
+    progressPercent: 80
+  },
+  {
+    id: "strings",
+    name: "Strings",
+    description: "Analyze pattern matching, regular expressions, and parsing techniques.",
+    difficultyTag: "Beginner",
+    difficultyColor: "bg-green-500/10 text-green-400",
+    icon: "text_fields",
+    questionsSolved: 35,
+    totalQuestions: 40,
+    progressPercent: 87
+  },
+  {
+    id: "linked-lists",
+    name: "Linked Lists",
+    description: "Manipulate singly, doubly, and circular lists. Pointer operations, cycle detection, and merging.",
+    difficultyTag: "Beginner",
+    difficultyColor: "bg-green-500/10 text-green-400",
+    icon: "link",
+    questionsSolved: 15,
+    totalQuestions: 20,
+    progressPercent: 75
+  },
+  {
+    id: "trees",
+    name: "Trees",
+    description: "Traverse binary trees, BSTs, and self-balancing nodes (AVL, Red-Black). DFS, BFS and tree serializations.",
+    difficultyTag: "Intermediate",
+    difficultyColor: "bg-secondary-container/20 text-secondary",
+    icon: "forest",
+    questionsSolved: 28,
+    totalQuestions: 45,
+    progressPercent: 62
+  },
+  {
+    id: "greedy",
+    name: "Greedy Algorithms",
+    description: "Optimize choices locally. Activity selection, Huffman coding, and fractional knapsack solver.",
+    difficultyTag: "Intermediate",
+    difficultyColor: "bg-secondary-container/20 text-secondary",
+    icon: "payments",
+    questionsSolved: 10,
+    totalQuestions: 25,
+    progressPercent: 40
+  },
+  {
+    id: "backtracking",
+    name: "Backtracking",
+    description: "Solve constraint satisfaction puzzles: N-Queens, Sudoku, and subset generation.",
+    difficultyTag: "Advanced",
+    difficultyColor: "bg-tertiary/10 text-tertiary",
+    icon: "undo",
+    questionsSolved: 5,
+    totalQuestions: 15,
+    progressPercent: 33
+  },
+  {
     id: "dynamic-programming",
     name: "Dynamic Programming",
     description: "Master optimal substructure and overlapping subproblems across 45+ elite challenges.",
@@ -231,17 +297,6 @@ export const MOCK_CATEGORIES: Category[] = [
     questionsSolved: 10,
     totalQuestions: 25,
     progressPercent: 40
-  },
-  {
-    id: "behavioral",
-    name: "Behavioral Questions",
-    description: "Use the STAR method to conquer leadership, conflict, and teamwork scenarios common at FAANG.",
-    difficultyTag: "Soft Skills",
-    difficultyColor: "bg-tertiary-container/20 text-tertiary",
-    icon: "groups",
-    questionsSolved: 8,
-    totalQuestions: 15,
-    progressPercent: 53
   }
 ];
 
