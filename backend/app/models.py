@@ -27,6 +27,66 @@ class Question(Base):
 
     java_solution = Column(String)
 
+    python_template = Column(String)
+
+    java_template = Column(String)
+
     test_cases = Column(JSON)
 
     explanation = Column(String)
+
+    created_date = Column(String, nullable=True)
+
+    is_daily = Column(String, nullable=True)
+
+class User(Base):
+
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    name = Column(String)
+
+    email = Column(String, unique=True, index=True)
+
+    hashed_password = Column(String)
+
+    google_id = Column(String, nullable=True)
+
+    avatar = Column(String, nullable=True)
+
+    is_verified = Column(String, default="true")
+
+    created_at = Column(String)
+
+class UserSubmission(Base):
+
+    __tablename__ = "user_submissions"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(Integer, index=True)
+
+    question_id = Column(Integer, index=True)
+
+    status = Column(String)
+
+    language = Column(String)
+
+    submitted_code = Column(String)
+
+    created_at = Column(String)
+
+class UserDownload(Base):
+
+    __tablename__ = "user_downloads"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(Integer, index=True)
+
+    file_name = Column(String)
+
+    questions_count = Column(Integer)
+
+    created_at = Column(String)

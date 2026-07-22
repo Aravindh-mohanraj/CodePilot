@@ -1,12 +1,107 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>PrepForge AI | AI-Powered Technical Interview Prep Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#e4e1ed",
+              "surface-container-highest": "#34343d",
+              "primary": "#c0c1ff",
+              "background": "#0d0d15",
+              "on-surface-variant": "#c7c4d7",
+              "on-background": "#e4e1ed",
+              "on-tertiary-container": "#452000",
+              "on-tertiary-fixed-variant": "#703700",
+              "on-secondary-container": "#c9aeff",
+              "outline-variant": "#464554",
+              "inverse-on-surface": "#303038",
+              "on-tertiary": "#4f2500",
+              "tertiary-container": "#d97721",
+              "surface-container-low": "#1b1b23",
+              "outline": "#908fa0",
+              "on-primary-container": "#0d0096",
+              "tertiary": "#ffb783",
+              "secondary-fixed-dim": "#d2bbff",
+              "on-primary-fixed": "#07006c",
+              "surface-variant": "#34343d",
+              "tertiary-fixed-dim": "#ffb783",
+              "on-primary": "#1000a9",
+              "surface-tint": "#c0c1ff",
+              "surface-container-lowest": "#0d0d15",
+              "inverse-primary": "#494bd6",
+              "surface-bright": "#393841",
+              "primary-fixed-dim": "#c0c1ff",
+              "on-secondary": "#3f008e",
+              "primary-container": "#6001d1",
+              "on-surface": "#e4e1ed",
+              "error": "#ffb4ab",
+              "surface-container": "#1f1f27",
+              "on-error": "#690005",
+              "error-container": "#93000a",
+              "primary-fixed": "#e1e0ff",
+              "surface-dim": "#0d0d15",
+              "tertiary-fixed": "#ffdcc5",
+              "secondary-container": "#6001d1",
+              "secondary": "#d2bbff",
+              "on-tertiary-fixed": "#301400",
+              "on-primary-fixed-variant": "#2f2ebe",
+              "secondary-fixed": "#eaddff",
+              "on-secondary-fixed-variant": "#5a00c6",
+              "surface-container-high": "#292932",
+              "on-secondary-fixed": "#25005a",
+              "surface": "#13131b",
+              "on-error-container": "#ffdad6"
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              code: ["Geist Mono", "monospace"]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #0d0d15;
+        color: #e4e1ed;
+        font-family: 'Inter', sans-serif;
+      }
+      .glass-panel {
+        background: rgba(31, 31, 39, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(70, 69, 84, 0.3);
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #34343d;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #464554;
+      }
+    </style>
   </head>
-  <body>
+  <body class="bg-[#0d0d15] text-[#e4e1ed] antialiased selection:bg-[#6001d1] selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="en" class="dark" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e4e1ed",
+                        "surface-container-highest": "#34343d",
+                        "primary": "#c0c1ff",
+                        "background": "#13131b",
+                        "on-surface-variant": "#c7c4d7",
+                        "on-background": "#e4e1ed",
+                        "on-tertiary-container": "#452000",
+                        "on-tertiary-fixed-variant": "#703700",
+                        "on-secondary-container": "#c9aeff",
+                        "outline-variant": "#464554",
+                        "inverse-on-surface": "#303038",
+                        "on-tertiary": "#4f2500",
+                        "tertiary-container": "#d97721",
+                        "surface-container-low": "#1b1b23",
+                        "outline": "#908fa0",
+                        "on-primary-container": "#0d0096",
+                        "tertiary": "#ffb783",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "on-primary-fixed": "#07006c",
+                        "surface-variant": "#34343d",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "on-primary": "#1000a9",
+                        "surface-tint": "#c0c1ff",
+                        "surface-container-lowest": "#0d0d15",
+                        "inverse-primary": "#494bd6",
+                        "surface-bright": "#393841",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "on-secondary": "#3f008e",
+                        "primary-container": "#8083ff",
+                        "on-surface": "#e4e1ed",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1f1f27",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#e1e0ff",
+                        "surface-dim": "#13131b",
+                        "tertiary-fixed": "#ffdcc5",
+                        "secondary-container": "#6001d1",
+                        "secondary": "#d2bbff",
+                        "on-tertiary-fixed": "#301400",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "secondary-fixed": "#eaddff",
+                        "on-secondary-fixed-variant": "#5a00c6",
+                        "surface-container-high": "#292932",
+                        "on-secondary-fixed": "#25005a",
+                        "surface": "#13131b",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "3xl": "64px",
+                        "sm": "8px",
+                        "2xl": "48px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "code": ["Geist Mono"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["20px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "500"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["30px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "code": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    }catch(_e){}</script><meta charset="utf-8"><style class="">
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(192, 193, 255, 0.3);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(192, 193, 255, 0.6);
+    opacity: 0.95;
+  }
+}
+</style></head><body class="bg-background text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container/80 backdrop-blur-lg border-r border-outline-variant/30 hidden md:flex flex-col py-xl z-40">
+<div class="px-lg mb-3xl">
+<h1 class="font-headline-sm text-headline-sm text-primary font-black tracking-tighter">PrepForge AI</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">AI Interview Prep</p>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<!---->
+<a href="#" class="flex items-center gap-md bg-primary-container text-on-primary-container rounded-lg p-md mx-sm transition-all Active:translate-x-1 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" data-original-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-md text-label-md">Explore</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all">
+<span class="material-symbols-outlined" data-original-icon="corporate_fare">corporate_fare</span>
+<span class="font-label-md text-label-md">Companies</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all">
+<span class="material-symbols-outlined">category</span>
+<span class="font-label-md text-label-md">Categories</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all">
+<span class="material-symbols-outlined" data-original-icon="bookmark">bookmark</span>
+<span class="font-label-md text-label-md">Bookmarks</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest hover:text-on-surface transition-all">
+<span class="material-symbols-outlined" data-original-icon="smart_toy">smart_toy</span>
+<span class="font-label-md text-label-md">AI Assistant</span>
+</a>
+</nav>
+<div class="px-sm mb-lg">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-md rounded-lg shadow-lg shadow-primary/10 hover:opacity-90 transition-opacity" style="animation: 2s ease-in-out 0s infinite normal none running pulse-glow;">
+                Start Practice
+            </button>
+</div>
+<div class="flex flex-col gap-xs mt-auto">
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a href="#" class="flex items-center gap-md text-on-surface-variant p-md mx-sm hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 min-h-screen p-md md:p-xl max-w-container-max mx-auto">
+<!-- Header -->
+<header class="flex justify-between items-end mb-xl">
+<div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg font-bold tracking-tight text-on-surface">Welcome back, Alex</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Your interview prep is 72% complete this week.</p>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant p-sm rounded-full hover:bg-surface-container transition-colors">notifications</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary/20 p-xs">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional studio portrait of a young tech professional with a friendly smile, clean minimalist lighting, wearing a dark sleek hoodie, positioned against a soft blurred background of a modern tech office with indigo and purple accent lights, high resolution digital photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOVXJNOjZuA5KF6bwUgI507jEnyuYTHlZASQVVN1Ip6QqWi9z77jPHFpmAQiXOaVv5YiFN8kzt6MZk55pycruJqwKKPs8rqw_adPgTT95UCMs7AaFLXX4lIpjUNmZrE_I8WJN6x0uZi4tgPJkGO5DyUNT7a7_1zwT_l11bFHt3zURzPHJZVxOnRWWjpX_hW6EOaOaXX9ome2_quq6SXYQ8EGAncW5vY09ng0gVFlYR8tp7Rvt0meySWNniAnhGHwDK6_mCaqh0jLg">
+</div>
+</div>
+</header>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-md mb-xl">
+<div class="glass-card p-md rounded-xl top-light-highlight">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block mb-xs">Questions Solved</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">142</span>
+<span class="text-xs text-tertiary">+12 this wk</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl top-light-highlight">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block mb-xs">Accuracy</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-secondary">84%</span>
+<span class="text-xs text-error">-2%</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl top-light-highlight">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block mb-xs">Current Streak</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-tertiary">12 Days</span>
+<span class="material-symbols-outlined text-tertiary text-sm">local_fire_department</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl top-light-highlight">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block mb-xs">Downloads</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">24</span>
+<span class="text-xs text-on-surface-variant">Resources</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl top-light-highlight">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block mb-xs">AI Views</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-secondary">89</span>
+<span class="material-symbols-outlined text-secondary text-sm">auto_awesome</span>
+</div>
+</div>
+</div>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl mb-xl">
+<!-- Left Column -->
+<div class="lg:col-span-8 flex flex-col gap-xl">
+<!-- Performance Charts Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Category Radar/Bar -->
+<div class="glass-card p-xl rounded-2xl flex flex-col h-80 relative overflow-hidden hover:shadow-primary/20 hover:border-primary/40 transition-all duration-200">
+<div class="flex justify-between items-center mb-lg relative z-10">
+<h3 class="font-title-lg text-title-lg">Problems Solved by Category</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<div class="flex-1 flex items-end gap-sm relative z-10">
+<div class="flex-1 bg-primary/20 h-[80%] rounded-t-lg relative group transition-all hover:bg-primary/40">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">45</div>
+</div>
+<div class="flex-1 bg-secondary/20 h-[65%] rounded-t-lg relative group transition-all hover:bg-secondary/40">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-secondary opacity-0 group-hover:opacity-100 transition-opacity">32</div>
+</div>
+<div class="flex-1 bg-tertiary/20 h-[95%] rounded-t-lg relative group transition-all hover:bg-tertiary/40">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">52</div>
+</div>
+<div class="flex-1 bg-primary/20 h-[40%] rounded-t-lg relative group transition-all hover:bg-primary/40">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">18</div>
+</div>
+<div class="flex-1 bg-secondary/20 h-[70%] rounded-t-lg relative group transition-all hover:bg-secondary/40">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-secondary opacity-0 group-hover:opacity-100 transition-opacity">38</div>
+</div>
+</div>
+<div class="flex justify-between mt-sm text-[10px] text-on-surface-variant font-medium px-xs">
+<span class="">ALGO</span><span class="">SYS</span><span class="">DB</span><span class="">WEB</span><span class="">NET</span>
+</div>
+
+</div>
+<!-- Difficulty Distribution -->
+<div class="glass-card p-xl rounded-2xl flex flex-col h-80 relative overflow-hidden hover:shadow-primary/20 hover:border-primary/40 transition-all duration-200">
+<h3 class="font-title-lg text-title-lg mb-lg">Difficulty Distribution</h3>
+<div class="flex-1 flex items-center justify-center relative">
+<div class="w-40 h-40 rounded-full border-[12px] border-surface-container-highest relative flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-[12px] border-l-primary border-t-primary border-r-secondary border-b-tertiary rotate-45"></div>
+<div class="text-center">
+<span class="block font-headline-md text-headline-md">142</span>
+<span class="block text-[10px] text-on-surface-variant uppercase">Total</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-xs mt-lg">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary mb-1"></div>
+<span class="text-[10px] text-on-surface-variant">Easy (62)</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-secondary mb-1"></div>
+<span class="text-[10px] text-on-surface-variant">Medium (54)</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-tertiary mb-1"></div>
+<span class="text-[10px] text-on-surface-variant">Hard (26)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Continue Solving Section -->
+<section>
+<h3 class="font-title-lg text-title-lg mb-md">Continue Solving</h3>
+<div class="glass-card p-xl rounded-2xl top-light-highlight ai-glow flex flex-col md:flex-row gap-lg items-center group cursor-pointer hover:border-primary/40 transition-all" style="animation: 2s ease-in-out 0s infinite normal none running pulse-glow;">
+<div class="w-full md:w-1/3 aspect-video bg-surface-container-highest rounded-xl overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary opacity-50">terminal</span>
+</div>
+</div>
+<div class="flex-1 space-y-md">
+<div class="flex items-center gap-sm">
+<span class="px-sm py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded uppercase">Medium</span>
+<span class="text-on-surface-variant font-label-md text-label-md">Data Structures • Hash Maps</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm group-hover:text-primary transition-colors">Longest Consecutive Sequence</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Find the length of the longest consecutive elements sequence in an unsorted array of integers. Expected time complexity O(n).</p>
+<div class="flex items-center gap-xl pt-xs">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">timer</span>
+<span class="text-xs text-on-surface-variant">Last attempt: 2h ago</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">group</span>
+<span class="text-xs text-on-surface-variant">Solved by 1.2k users</span>
+</div>
+</div>
+</div>
+<button class="w-full md:w-auto px-xl py-md bg-primary text-on-primary font-bold rounded-lg flex items-center justify-center gap-sm group-hover:scale-105 transition-transform" style="animation: 2s ease 0s infinite normal none running pulse-glow;">
+                            Resume
+                            <span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Right Column -->
+<div class="lg:col-span-4 flex flex-col gap-xl">
+<!-- Recommended Questions -->
+<div class="glass-card p-xl rounded-2xl flex flex-col hover:shadow-primary/20 hover:border-primary/40 transition-all duration-200">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-title-lg text-title-lg">Recommended for You</h3>
+<a class="text-xs text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-md">
+<!-- Recommendation Item-->
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/10 hover:border-outline-variant/40 transition-colors flex justify-between items-center group">
+<div>
+<h5 class="font-body-md text-body-md font-bold mb-1">Serialize Binary Tree</h5>
+<div class="flex items-center gap-sm">
+<span class="text-error font-label-md text-[10px] uppercase">Hard</span>
+<span class="text-on-surface-variant text-[10px]">Trees • Recursion</span>
+</div>
+</div>
+<button class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-md">play_arrow</span>
+</button>
+</div>
+<!-- Recommendation Item-->
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/10 hover:border-outline-variant/40 transition-colors flex justify-between items-center group">
+<div>
+<h5 class="font-body-md text-body-md font-bold mb-1">3Sum Closest</h5>
+<div class="flex items-center gap-sm">
+<span class="text-secondary font-label-md text-[10px] uppercase">Medium</span>
+<span class="text-on-surface-variant text-[10px]">Arrays • Pointers</span>
+</div>
+</div>
+<button class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-md">play_arrow</span>
+</button>
+</div>
+<!-- Recommendation Item 3 -->
+<div class="p-md bg-surface-container-low rounded-xl border border-outline-variant/10 hover:border-outline-variant/40 transition-colors flex justify-between items-center group">
+<div>
+<h5 class="font-body-md text-body-md font-bold mb-1">Balanced Brackets</h5>
+<div class="flex items-center gap-sm">
+<span class="text-primary font-label-md text-[10px] uppercase">Easy</span>
+<span class="text-on-surface-variant text-[10px]">Stacks</span>
+</div>
+</div>
+<button class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-md">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Recent Activity Timeline -->
+<div class="glass-card p-xl rounded-2xl flex flex-col flex-1">
+<h3 class="font-title-lg text-title-lg mb-lg">Recent Activity</h3>
+<div class="relative space-y-lg before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-px before:bg-outline-variant/20">
+<!-- Activity 1 -->
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-primary border-4 border-background z-10 transition-transform group-hover:scale-125"></div>
+<span class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Today, 10:45 AM</span>
+<p class="font-body-sm text-body-sm"><span class="font-bold text-primary">Solved</span> "Merge K Sorted Lists" in 24 mins.</p>
+<p class="text-[10px] text-on-surface-variant mt-1">Accuracy: 100% • Optimal Space O(1)</p>
+</div>
+<!-- Activity 2 -->
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-secondary border-4 border-background z-10 transition-transform group-hover:scale-125"></div>
+<span class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Yesterday</span>
+<p class="font-body-sm text-body-sm"><span class="font-bold text-secondary">Earned Badge:</span> "Recursion Master"</p>
+<p class="text-[10px] text-on-surface-variant mt-1">For solving 25 problems in recursion category.</p>
+</div>
+<!-- Activity 3 -->
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-tertiary border-4 border-background z-10 transition-transform group-hover:scale-125"></div>
+<span class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Oct 24, 2024</span>
+<p class="font-body-sm text-body-sm"><span class="font-bold text-tertiary">Downloaded</span> "System Design Cheat Sheet"</p>
+<p class="text-[10px] text-on-surface-variant mt-1">PDF Resource • 4.2MB</p>
+</div>
+<!-- Activity 4 -->
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-on-surface-variant border-4 border-background z-10 transition-transform group-hover:scale-125"></div>
+<span class="block text-[10px] text-on-surface-variant uppercase font-bold mb-1">Oct 22, 2024</span>
+<p class="font-body-sm text-body-sm">AI Assistant generated a custom study plan for <span class="font-bold">Google L4.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer (Hidden on Dashboard Shell as per logic but included for completeness if needed) -->
+<footer class="mt-3xl pt-xl border-t border-outline-variant/10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-md">
+<span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 PrepForge AI. All rights reserved.</span>
+<div class="flex gap-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contact Us</a>
+</div>
+</footer>
+</main>
+<!-- Mobile Navigation Bar (Fixed Bottom) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container/90 backdrop-blur-xl border-t border-outline-variant/20 flex justify-around items-center px-md z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-bold">Dash</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px]">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">corporate_fare</span>
+<span class="text-[10px]">Companies</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-[10px]">AI</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and effects
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+
+</body></html>
