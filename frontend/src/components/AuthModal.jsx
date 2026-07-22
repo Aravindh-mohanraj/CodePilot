@@ -127,24 +127,20 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
     handleDemoLogin();
   };
 
-  const handleDemoLogin = async () => {
-    try {
-      const res = await fetch('/api/auth/google', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Guest Developer', email: 'guest.developer@code-pilot.com' })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('prepforge_user', JSON.stringify(data.user));
-        localStorage.setItem('prepforge_token', data.token);
-        if (onSuccess) onSuccess(data.user);
-        onClose();
-        return;
-      }
-    } catch (e) {}
-    setErrorMsg('Google OAuth initialization error. Please verify Google Console settings or use Email Sign In below.');
-    setSubmitting(false);
+  const handleDemoLogin = () => {
+    const guestUser = {
+      id: 9999,
+      name: 'Guest Developer',
+      email: 'Guest Mode (No Email Required)',
+      avatar: 'https://ui-avatars.com/api/?name=Guest+Developer&background=6001d1&color=fff&bold=true&size=128',
+      is_guest: true,
+      is_verified: 'true'
+    };
+    localStorage.setItem('prepforge_user', JSON.stringify(guestUser));
+    localStorage.setItem('prepforge_token', 'guest_access_token');
+    if (onSuccess) onSuccess(guestUser);
+    onClose();
+    window.dispatchEvent(new Event('storage'));
   };
 
   const handleSubmit = async (e) => {

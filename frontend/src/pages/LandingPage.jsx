@@ -52,14 +52,15 @@ export default function LandingPage() {
             onClick={() => {
               if (!localStorage.getItem('prepforge_user')) {
                 const guestUser = {
-                  id: 999,
+                  id: 9999,
                   name: 'Guest Developer',
-                  email: 'guest.developer@code-pilot.com',
+                  email: 'Guest Mode (No Email Required)',
                   avatar: 'https://ui-avatars.com/api/?name=Guest+Developer&background=6001d1&color=fff&bold=true&size=128',
+                  is_guest: true,
                   is_verified: 'true'
                 };
                 localStorage.setItem('prepforge_user', JSON.stringify(guestUser));
-                localStorage.setItem('prepforge_token', 'guest_demo_token');
+                localStorage.setItem('prepforge_token', 'guest_access_token');
                 window.dispatchEvent(new Event('storage'));
               }
             }}
