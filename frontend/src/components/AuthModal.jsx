@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const GOOGLE_CLIENT_ID = "476202653996-hqj4srs8bvd0v4vpv6jmtnqj5rcujr85.apps.googleusercontent.com";
 
@@ -10,18 +10,64 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
   const [errorMsg, setErrorMsg] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Initialize Google One Tap when modal opens
+  useEffect(() => {
+    if (!isOpen) return;
+    const tryInitGoogleId = () => {
+      if (window.google && window.google.accounts && window.google.accounts.id) {
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCredential,
+          auto_select: false,
+          cancel_on_tap_outside: true,
+        });
+      }
+    };
+    if (window.google) {
+      tryInitGoogleId();
+    } else {
+      const interval = setInterval(() => {
+        if (window.google) { tryInitGoogleId(); clearInterval(interval); }
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleGoogleSignInPopup = () => {
+  // Called by Google One Tap with an id_token credential
+  const handleGoogleCredential = async (credentialResponse) => {
+    setErrorMsg('');
+    setSubmitting(true);
+    try {
+      const res = await fetch('/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_token: credentialResponse.credential })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Google sign-in failed');
+      localStorage.setItem('prepforge_user', JSON.stringify(data.user));
+      localStorage.setItem('prepforge_token', data.token);
+      if (onSuccess) onSuccess(data.user);
+      onClose();
+    } catch (err) {
+      setErrorMsg(err.message || 'Google verification failed');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGoogleSignIn = () => {
     setErrorMsg('');
     setSubmitting(true);
 
-    // 1. Try Google Identity Services (GIS) Token Client Popup
+    // Strategy 1: GIS OAuth2 Token Client (most reliable on production)
     if (window.google && window.google.accounts && window.google.accounts.oauth2) {
       try {
-        const client = window.google.accounts.oauth2.initTokenClient({
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
           client_id: GOOGLE_CLIENT_ID,
-          scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+          scope: 'openid email profile',
           callback: async (tokenResponse) => {
             if (tokenResponse && tokenResponse.access_token) {
               try {
@@ -38,106 +84,68 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
                 onClose();
               } catch (err) {
                 setErrorMsg(err.message || 'Google verification failed');
-              } finally {
                 setSubmitting(false);
               }
             } else {
-              setSubmitting(false);
+              // Token client closed without response — try One Tap prompt
+              tryOneTap();
             }
           },
           error_callback: (err) => {
-            console.warn("GIS token error:", err);
-            openGoogleOAuthUrlPopup();
+            console.warn('GIS token error:', err);
+            tryOneTap();
           }
         });
-        client.requestAccessToken();
+        tokenClient.requestAccessToken({ prompt: 'select_account' });
         return;
       } catch (e) {
-        console.warn("GIS token client failed, fallback to OAuth URL popup", e);
+        console.warn('GIS token client init failed:', e);
       }
     }
 
-    openGoogleOAuthUrlPopup();
+    // Strategy 2: Google One Tap prompt
+    tryOneTap();
   };
 
-  const openGoogleOAuthUrlPopup = () => {
-    const redirectUri = window.location.origin.replace(/\/$/, '');  // strip trailing slash
-    const scope = encodeURIComponent('email profile');
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
-
-    
-    const width = 500;
-    const height = 600;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    
-    const popup = window.open(authUrl, 'GoogleAuthPopup', `width=${width},height=${height},top=${top},left=${left}`);
-    
-    if (!popup) {
-      setErrorMsg("Popup blocked! Please allow popups for Google authentication.");
-      setSubmitting(false);
-      return;
-    }
-
-    const timer = setInterval(async () => {
+  const tryOneTap = () => {
+    if (window.google && window.google.accounts && window.google.accounts.id) {
       try {
-        if (popup.closed) {
-          clearInterval(timer);
-          setSubmitting(false);
-          return;
-        }
-        
-        if (popup.location.href.includes('access_token=')) {
-          const hash = popup.location.hash || popup.location.href.split('#')[1] || '';
-          const params = new URLSearchParams(hash);
-          const accessToken = params.get('access_token');
-          
-          popup.close();
-          clearInterval(timer);
-
-          if (accessToken) {
-            const res = await fetch('/auth/google', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ access_token: accessToken })
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.detail || 'Google sign-in failed');
-
-            localStorage.setItem('prepforge_user', JSON.stringify(data.user));
-            localStorage.setItem('prepforge_token', data.token);
-
-            if (onSuccess) onSuccess(data.user);
-            onClose();
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleCredential,
+        });
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            // One Tap not shown — show error with guidance
+            setErrorMsg('Google sign-in popup was blocked. Please allow popups for this site and try again, or use email/password below.');
+            setSubmitting(false);
           }
-        }
+        });
+        return;
       } catch (e) {
-        // Cross-origin polling until redirect
+        console.warn('One Tap failed:', e);
       }
-    }, 500);
+    }
+    setErrorMsg('Google sign-in is not available. Please use email and password instead.');
+    setSubmitting(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     setSubmitting(true);
-
     try {
       const endpoint = mode === 'signup' ? '/auth/signup' : '/auth/login';
       const payload = mode === 'signup' ? { name, email, password } : { email, password };
-
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Authentication failed');
-
       localStorage.setItem('prepforge_user', JSON.stringify(data.user));
       localStorage.setItem('prepforge_token', data.token);
-
       if (onSuccess) onSuccess(data.user);
       onClose();
     } catch (err) {
@@ -148,12 +156,12 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
       <div className="relative w-full max-w-md bg-[#13131b] border border-[#464554]/50 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-purple-900/20">
-        
+
         {/* Close Button */}
-        <button 
-          onClick={onClose} 
+        <button
+          onClick={onClose}
           className="absolute top-4 right-4 text-[#908fa0] hover:text-white transition-colors p-1.5 rounded-lg hover:bg-[#1f1f27]"
         >
           <span className="material-symbols-outlined text-xl">close</span>
@@ -174,20 +182,24 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
           </div>
         </div>
 
-        {/* Single Clean Google OAuth Button */}
+        {/* Google Sign-In Button */}
         <button
           type="button"
-          onClick={handleGoogleSignInPopup}
+          onClick={handleGoogleSignIn}
           disabled={submitting}
-          className="w-full mb-5 py-3 px-4 bg-[#1f1f27] hover:bg-[#2a2a35] border border-[#464554]/60 rounded-xl text-xs font-semibold text-[#e4e1ed] transition-all flex items-center justify-center gap-3 shadow-md active:scale-[0.98]"
+          className="w-full mb-5 py-3 px-4 bg-[#1f1f27] hover:bg-[#2a2a35] border border-[#464554]/60 rounded-xl text-sm font-semibold text-[#e4e1ed] transition-all flex items-center justify-center gap-3 shadow-md active:scale-[0.98] disabled:opacity-50"
         >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
-            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15s.7 5.3 1.9 7.7l3.7-2.9z"/>
-            <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"/>
-          </svg>
-          <span className="text-sm">Continue with Google</span>
+          {submitting ? (
+            <div className="w-5 h-5 border-2 border-[#6001d1] border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <svg className="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+              <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+              <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15s.7 5.3 1.9 7.7l3.7-2.9z"/>
+              <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"/>
+            </svg>
+          )}
+          <span>Continue with Google</span>
         </button>
 
         <div className="flex items-center gap-3 mb-5">
@@ -198,13 +210,13 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
 
         {/* Error Alert */}
         {errorMsg && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-            <span className="material-symbols-outlined text-base">error</span>
+          <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2">
+            <span className="material-symbols-outlined text-base mt-0.5 shrink-0">error</span>
             <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* Form */}
+        {/* Email/Password Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <div>
@@ -227,7 +239,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="aravindhmohanraj99@gmail.com"
+              placeholder="you@example.com"
               className="w-full bg-[#1b1b23] border border-[#464554]/60 rounded-xl px-4 py-2.5 text-sm text-[#e4e1ed] placeholder-[#908fa0] focus:outline-none focus:border-[#c0c1ff] transition-all"
             />
           </div>
