@@ -99,13 +99,22 @@ def get_questions(
     if category:
         query = query.filter(Question.category.ilike(f"%{category}%"))
 
-    if company:
-        query = query.filter(Question.companies.contains(company))
-
     results = query.all()
 
     output = []
     for q in results:
+        comps = q.companies or []
+        if isinstance(comps, str):
+            try:
+                comps = json.loads(comps)
+            except:
+                comps = [comps]
+
+        if company:
+            match = any(company.lower() in c.lower() for c in comps if isinstance(c, str))
+            if not match:
+                continue
+
         output.append({
             "id": q.id,
             "title": q.title,
@@ -229,9 +238,10 @@ def download_questions(question_ids: List[int], email: Optional[str] = Query(Non
             "explanation": q.explanation
         })
 
-    os.makedirs("downloads", exist_ok=True)
+    target_dir = "/tmp/downloads" if os.environ.get("VERCEL") else "downloads"
+    os.makedirs(target_dir, exist_ok=True)
     file_name = f"prepforge_questions_{len(result)}_items.json"
-    file_path = f"downloads/{file_name}"
+    file_path = os.path.join(target_dir, file_name)
 
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=4, ensure_ascii=False)
