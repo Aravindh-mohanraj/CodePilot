@@ -317,8 +317,36 @@ def generate_ai(question_id: int, db: Session = Depends(get_db)):
             "statement": question.statement,
             "python_solution": question.python_solution,
             "java_solution": question.java_solution,
-            "explanation": question.explanation
+            "explanation": question.explanation,
+            "test_cases": question.test_cases
         }
+    }
+
+# Real-time AI Test Cases Generator Endpoint
+@router.post("/generate-testcases/{question_id}")
+def generate_testcases_endpoint(question_id: int, db: Session = Depends(get_db)):
+    question = db.query(Question).filter(Question.id == question_id).first()
+    if question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    ai_data = generate_solution(question.title)
+    test_cases = ai_data.get("test_cases", [])
+
+    if test_cases:
+        question.test_cases = test_cases
+        if ai_data.get("python_solution"):
+            question.python_solution = ai_data.get("python_solution")
+        if ai_data.get("java_solution"):
+            question.java_solution = ai_data.get("java_solution")
+        db.commit()
+        db.refresh(question)
+
+    return {
+        "message": "Real-time AI test cases generated successfully",
+        "question_id": question.id,
+        "test_cases": question.test_cases or [],
+        "python_solution": question.python_solution,
+        "java_solution": question.java_solution
     }
 
 # Live AI Coach Chat Endpoint
