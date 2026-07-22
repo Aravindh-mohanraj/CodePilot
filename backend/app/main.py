@@ -31,6 +31,8 @@ possible_dirs = [
     os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")),
     os.path.abspath(os.path.join(os.getcwd(), "frontend", "dist")),
     os.path.abspath(os.path.join(os.getcwd(), "dist")),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")),
+    os.path.abspath(os.path.join(os.getcwd())),
 ]
 
 FRONTEND_DIR = possible_dirs[0]
