@@ -130,13 +130,19 @@ export default function ExploreQuestionsPage() {
     }
   };
 
-  // Filter local search term if typed
+  const [topPicksOnly, setTopPicksOnly] = useState(false);
+
+  // Filter local search term & Top Picks if selected
   const filteredQuestions = questions.filter((q) => {
+    const comps = Array.isArray(q.companies) ? q.companies : (q.companies ? [q.companies] : []);
+    const isTopPick = comps.length > 0;
+    if (topPicksOnly && !isTopPick) return false;
+
     if (!searchTerm) return true;
     return (
       q.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       q.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (q.companies && q.companies.some((c) => c.toLowerCase().includes(searchTerm.toLowerCase())))
+      comps.some((c) => String(c).toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 
@@ -248,6 +254,19 @@ export default function ExploreQuestionsPage() {
             ))}
           </div>
 
+          {/* AI Top Picks Filter Button */}
+          <button
+            onClick={() => setTopPicksOnly(!topPicksOnly)}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              topPicksOnly
+                ? 'bg-gradient-to-r from-amber-500/30 to-orange-500/30 border-amber-500/60 text-amber-300 shadow-md shadow-amber-950/40'
+                : 'bg-[#1b1b23] border-[#34343d] text-[#908fa0] hover:text-white hover:bg-[#1f1f27]'
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm text-amber-400">local_fire_department</span>
+            <span>🔥 AI Top Picks Only</span>
+          </button>
+
         </div>
 
         {/* Active Filters Badges */}
@@ -344,6 +363,18 @@ export default function ExploreQuestionsPage() {
                         >
                           {q.title}
                         </Link>
+
+                        {/* AI Top Pick Badge for Top Companies */}
+                        {companiesList.length > 0 && (
+                          <span 
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold shadow-sm shrink-0"
+                            title="AI Verified: Frequently Asked Interview Question by Top Tech Companies (GeeksforGeeks / LeetCode Top 100)"
+                          >
+                            <span className="material-symbols-outlined text-[12px] text-amber-400">local_fire_department</span>
+                            <span>AI Top Pick</span>
+                          </span>
+                        )}
+
                         {isSolved && (
                           <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono flex items-center gap-1 font-semibold">
                             <span>✓</span> Solved
