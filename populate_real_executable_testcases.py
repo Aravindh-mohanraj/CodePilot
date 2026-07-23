@@ -28,7 +28,7 @@ REAL_TESTCASES_BY_CATEGORY = {
             {"input": "nums = [10^9, 10^9], target = 2*10^9", "expected": "[0, 1]", "explanation": "Large integer sum"}
         ],
         '''class Solution:
-    def twoSum(self, nums, target):
+    def solve(self, nums, target=9):
         seen = {}
         for i, num in enumerate(nums):
             diff = target - num
@@ -39,7 +39,7 @@ REAL_TESTCASES_BY_CATEGORY = {
         '''import java.util.*;
 
 public class Solution {
-    public int[] twoSum(int[] nums, int target) {
+    public int[] solve(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             int diff = target - nums[i];

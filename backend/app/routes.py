@@ -73,15 +73,7 @@ def get_default_test_cases(q_id: int):
     ]
 
 def get_default_solution(q_id: int):
-    if q_id == 1:
-        return "class Solution:\n    def twoSum(self, nums, target):\n        pass"
-    elif q_id == 2:
-        return "class Solution:\n    def maxProfit(self, prices):\n        pass"
-    elif q_id == 3:
-        return "class Solution:\n    def isValid(self, s):\n        pass"
-    elif q_id == 4:
-        return "class Solution:\n    def mergeTwoLists(self, list1, list2):\n        pass"
-    return "class Solution:\n    def solve(self, *args):\n        pass"
+    return "class Solution:\n    def solve(self, nums):\n        pass"
 
 # Get all questions with filters
 @router.get("/questions")

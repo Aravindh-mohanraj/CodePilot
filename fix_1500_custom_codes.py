@@ -10,7 +10,7 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "backend", "database", "interv
 CUSTOM_ALGORITHMS = {
     "Two Sum": (
         '''class Solution:
-    def twoSum(self, nums, target):
+    def solve(self, nums, target=9):
         """
         Hash Map 1-Pass Solution. O(N) Time, O(N) Space.
         """
@@ -24,7 +24,7 @@ CUSTOM_ALGORITHMS = {
         '''import java.util.*;
 
 public class Solution {
-    public int[] twoSum(int[] nums, int target) {
+    public int[] solve(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             int complement = target - nums[i];

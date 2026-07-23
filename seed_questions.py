@@ -505,7 +505,7 @@ private int[] merge(int[] left, int[] right) {
             {"input": "[2,7,11,15], 22", "expected": "[2,3]"},
             {"input": "[1,2], 3", "expected": "[1,2]"},
         ],
-        "python_solution": '''def twoSum(numbers, target):
+        "python_solution": '''def twoSumSorted(numbers, target):
     left, right = 0, len(numbers) - 1
     while left < right:
         s = numbers[left] + numbers[right]
@@ -516,7 +516,7 @@ private int[] merge(int[] left, int[] right) {
         else:
             right -= 1
     return []''',
-        "java_solution": '''public int[] twoSum(int[] numbers, int target) {
+        "java_solution": '''public int[] twoSumSorted(int[] numbers, int target) {
     int left = 0, right = numbers.length - 1;
     while (left < right) {
         int sum = numbers[left] + numbers[right];
