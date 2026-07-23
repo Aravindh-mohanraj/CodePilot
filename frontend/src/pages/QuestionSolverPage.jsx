@@ -68,6 +68,15 @@ export default function QuestionSolverPage() {
     }
   };
 
+  useEffect(() => {
+    if (question) {
+      const sol = language === 'python'
+        ? (isPracticeMode ? (question.python_template || question.python_solution) : (question.python_solution || question.python_template))
+        : (isPracticeMode ? (question.java_template || question.java_solution) : (question.java_solution || question.java_template));
+      if (sol) setCode(sol);
+    }
+  }, [language, isPracticeMode, question]);
+
   const getInitialTemplate = (lang, title) => {
     if (lang === 'python') {
       return `class Solution:\n    def solve(self, input_data):`;
