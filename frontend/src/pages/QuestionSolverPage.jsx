@@ -37,26 +37,25 @@ export default function QuestionSolverPage() {
       console.warn('Backend unavailable, using default demo question', err);
       const demoQuestion = {
         id: parseInt(id),
-        title: id === '1' ? 'Two Sum' : 'LRU Cache Design',
-        difficulty: 'Easy',
-        category: 'Arrays & Hashing',
-        companies: ['Google', 'Amazon', 'Meta'],
-        statement: 'Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`. You may assume that each input would have exactly one solution, and you may not use the same element twice.',
+        title: `Technical Challenge #${id}`,
+        difficulty: 'Medium',
+        category: 'Dynamic Programming',
+        companies: ['TCS CodeVita', 'Google', 'Amazon'],
+        statement: `Given an input dataset, design an optimal algorithm for Technical Challenge #${id}. Your solution must handle all edge cases and pass performance benchmarks under 1.0s execution time.`,
         examples: [
-          { input: 'nums = [2,7,11,15], target = 9', output: '[0,1]', explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].' },
-          { input: 'nums = [3,2,4], target = 6', output: '[1,2]' }
+          { input: 'nums = [2, 3, 2]', output: '3', explanation: 'Maximum non-adjacent subarray sum is 3.' },
+          { input: 'nums = [1, 2, 3, 1]', output: '4', explanation: 'Optimal sum is 1 + 3 = 4.' }
         ],
         constraints: [
-          '2 <= nums.length <= 10^4',
+          '1 <= N <= 10^5',
           '-10^9 <= nums[i] <= 10^9',
-          '-10^9 <= target <= 10^9',
-          'Only one valid answer exists.'
+          'Time Limit: 1.0s'
         ],
-        python_solution: `class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:\n        prevMap = {} # val -> index\n        for i, n in enumerate(nums):\n            diff = target - n\n            if diff in prevMap:\n                return [prevMap[diff], i]\n            prevMap[n] = i\n        return []`,
-        java_solution: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int diff = target - nums[i];\n            if (map.containsKey(diff)) {\n                return new int[] { map.get(diff), i };\n            }\n            map.put(nums[i], i);\n        }\n        return new int[]{};\n    }\n}`,
-        python_template: `class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:`,
-        java_template: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n    }\n}`,
-        explanation: 'We use a hash map to store value-to-index mappings. For each number, we check if `target - num` exists in the hash map in O(1) time.'
+        python_solution: `class Solution:\n    def solve(self, nums):\n        if not nums: return 0\n        if len(nums) <= 2: return max(nums)\n        dp = [0] * len(nums)\n        dp[0] = nums[0]\n        dp[1] = max(nums[0], nums[1])\n        for i in range(2, len(nums)):\n            dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n        return dp[-1]`,
+        java_solution: `import java.util.*;\n\npublic class Solution {\n    public int solve(int[] nums) {\n        if (nums == null || nums.length == 0) return 0;\n        if (nums.length == 1) return nums[0];\n        int[] dp = new int[nums.length];\n        dp[0] = nums[0];\n        dp[1] = Math.max(nums[0], nums[1]);\n        for (int i = 2; i < nums.length; i++) {\n            dp[i] = Math.max(dp[i-1], dp[i-2] + nums[i]);\n        }\n        return dp[nums.length - 1];\n    }\n}`,
+        python_template: `class Solution:\n    def solve(self, nums):`,
+        java_template: `public class Solution {\n    public int solve(int[] nums) {\n    }\n}`,
+        explanation: 'Optimal Dynamic Programming approach. Time Complexity O(N), Space Complexity O(N).'
       };
       setQuestion(demoQuestion);
       const sol = language === 'python'
