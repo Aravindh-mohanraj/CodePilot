@@ -131,6 +131,13 @@ export default function ExploreQuestionsPage() {
   };
 
   const [topPicksOnly, setTopPicksOnly] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, company, category, difficulty, topPicksOnly]);
 
   // Filter local search term & Top Picks if selected
   const filteredQuestions = questions.filter((q) => {
@@ -145,6 +152,12 @@ export default function ExploreQuestionsPage() {
       comps.some((c) => String(c).toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
+
+  const totalPages = Math.ceil(filteredQuestions.length / itemsPerPage) || 1;
+  const paginatedQuestions = filteredQuestions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="p-6 sm:p-8 max-w-7xl mx-auto space-y-6">
@@ -335,7 +348,7 @@ export default function ExploreQuestionsPage() {
           </div>
         ) : (
           <div className="divide-y divide-[#34343d]/60">
-            {filteredQuestions.map((q) => {
+            {paginatedQuestions.map((q) => {
               const isSelected = selectedIds.includes(q.id);
               const isSolved = solvedIds.includes(q.id);
               const companiesList = Array.isArray(q.companies) ? q.companies : (q.companies ? [q.companies] : []);
@@ -426,6 +439,35 @@ export default function ExploreQuestionsPage() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* Pagination Bar */}
+        {filteredQuestions.length > itemsPerPage && (
+          <div className="p-4 border-t border-[#34343d] flex items-center justify-between bg-[#191925]/60 text-xs text-[#908fa0]">
+            <span>
+              Page <strong className="text-white">{currentPage}</strong> of <strong className="text-white">{totalPages}</strong> ({filteredQuestions.length} Total Questions)
+            </span>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 rounded-lg bg-[#1b1b23] border border-[#34343d] text-white disabled:opacity-40 hover:bg-[#252530] transition-colors flex items-center gap-1 font-semibold"
+              >
+                <span className="material-symbols-outlined text-xs">chevron_left</span>
+                <span>Previous</span>
+              </button>
+
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 rounded-lg bg-[#1b1b23] border border-[#34343d] text-white disabled:opacity-40 hover:bg-[#252530] transition-colors flex items-center gap-1 font-semibold"
+              >
+                <span>Next</span>
+                <span className="material-symbols-outlined text-xs">chevron_right</span>
+              </button>
+            </div>
           </div>
         )}
       </div>
