@@ -208,6 +208,7 @@ export default function ExploreQuestionsPage() {
               className="w-full bg-[#1b1b23] border border-[#34343d] rounded-xl px-3 py-2 text-xs text-[#e4e1ed] focus:outline-none focus:border-[#c0c1ff] appearance-none"
             >
               <option value="">All Companies</option>
+              <option value="TCS CodeVita">TCS CodeVita</option>
               <option value="Google">Google</option>
               <option value="Amazon">Amazon</option>
               <option value="Meta">Meta</option>

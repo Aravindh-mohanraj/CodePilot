@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function CompaniesPage() {
   const companies = [
+    { name: 'TCS CodeVita', count: 480, easy: 120, medium: 240, hard: 120, tag: 'Global Contest', color: 'from-[#6001d1]/30 to-purple-900/20' },
     { name: 'Google', count: 340, easy: 90, medium: 180, hard: 70, tag: 'FAANG', color: 'from-[#4285F4]/20 to-blue-900/10' },
     { name: 'Amazon', count: 420, easy: 110, medium: 230, hard: 80, tag: 'FAANG', color: 'from-[#FF9900]/20 to-amber-900/10' },
     { name: 'Meta', count: 290, easy: 70, medium: 160, hard: 60, tag: 'FAANG', color: 'from-[#0668E1]/20 to-indigo-900/10' },
@@ -10,7 +11,6 @@ export default function CompaniesPage() {
     { name: 'Apple', count: 180, easy: 50, medium: 95, hard: 35, tag: 'FAANG', color: 'from-gray-500/20 to-gray-900/10' },
     { name: 'Netflix', count: 120, easy: 20, medium: 65, hard: 35, tag: 'FAANG', color: 'from-[#E50914]/20 to-rose-900/10' },
     { name: 'Uber', count: 210, easy: 45, medium: 120, hard: 45, tag: 'Unicorn', color: 'from-emerald-600/20 to-teal-900/10' },
-    { name: 'Stripe', count: 150, easy: 30, medium: 85, hard: 35, tag: 'FinTech', color: 'from-[#635BFF]/20 to-purple-900/10' },
   ];
 
   return (
