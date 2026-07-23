@@ -1,7 +1,7 @@
 import os
 import json
+import re
 import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
 
 def extract_problem_titles_gfg(cmp: str, difficulty: str):
@@ -9,7 +9,7 @@ def extract_problem_titles_gfg(cmp: str, difficulty: str):
     url = f"https://www.geeksforgeeks.org/explore?page=1&company={cmp}&difficulty={difficulty}&sortBy=submissions"
     titles = []
 
-    # 1. Try Playwright sync scraper (User's Exact Implementation)
+    # 1. Try Playwright sync scraper (User's Implementation) if available
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
@@ -20,30 +20,42 @@ def extract_problem_titles_gfg(cmp: str, difficulty: str):
             html = page.content()
             browser.close()
 
-        soup = BeautifulSoup(html, "html.parser")
-        problems = soup.select(".explore_problem_name__3QSiP")[:6]
-        if not problems:
-            problems = soup.select("a[href*='/problems/']")[:6]
-
-        for problem in problems:
-            t = problem.get_text(strip=True)
-            if t and t not in titles:
-                titles.append(t)
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(html, "html.parser")
+            problems = soup.select(".explore_problem_name__3QSiP")[:6]
+            if not problems:
+                problems = soup.select("a[href*='/problems/']")[:6]
+            for problem in problems:
+                t = problem.get_text(strip=True)
+                if t and t not in titles:
+                    titles.append(t)
+        except Exception:
+            pass
     except Exception as e:
         print(f"Playwright GFG scraper notice ({e}), using HTTP fallback...")
 
-    # 2. Try HTTP Requests + BeautifulSoup fallback
+    # 2. Try HTTP Requests + BeautifulSoup or regex fallback
     if not titles:
         try:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
             res = requests.get(url, headers=headers, timeout=8)
             if res.status_code == 200:
-                soup = BeautifulSoup(res.text, "html.parser")
-                problems = soup.select("a[href*='/problems/']")[:6]
-                for p in problems:
-                    t = p.get_text(strip=True)
-                    if t and len(t) > 3 and t not in titles:
-                        titles.append(t)
+                try:
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(res.text, "html.parser")
+                    problems = soup.select("a[href*='/problems/']")[:6]
+                    for p in problems:
+                        t = p.get_text(strip=True)
+                        if t and len(t) > 3 and t not in titles:
+                            titles.append(t)
+                except Exception:
+                    # Regex fallback if bs4 is missing
+                    raw_matches = re.findall(r'/problems/([a-zA-Z0-9\-]+)', res.text)
+                    for m in raw_matches[:6]:
+                        clean_t = m.replace('-', ' ').title()
+                        if clean_t not in titles:
+                            titles.append(clean_t)
         except Exception as e2:
             print("HTTP fallback notice:", e2)
 
