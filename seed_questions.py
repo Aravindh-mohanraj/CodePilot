@@ -717,17 +717,24 @@ def seed_database():
         print(f"  [ADD]  {q['title']} ({q['category']}, {q['difficulty']})")
     conn.commit()
 
-    # ── Update all existing questions to ensure 10 test cases ────────────────
+    # ── Update all existing questions to ensure 10 test cases and past 14-day calendar dates ──
+    from datetime import timedelta
+    today_dt = datetime.utcnow()
     rows = conn.execute("SELECT id, title, category, test_cases FROM questions").fetchall()
-    for row_id, q_title, q_cat, raw_tc in rows:
+    for idx, (row_id, q_title, q_cat, raw_tc) in enumerate(rows):
+        offset_days = idx % 14
+        calc_date = (today_dt - timedelta(days=offset_days)).strftime("%Y-%m-%d")
+        
         try:
             parsed_tc = json.loads(raw_tc) if raw_tc else []
             if not isinstance(parsed_tc, list) or len(parsed_tc) < 10:
                 new_10_tc = generate_10_test_cases(q_title, q_cat)
-                conn.execute("UPDATE questions SET test_cases = ? WHERE id = ?", (json.dumps(new_10_tc), row_id))
+                conn.execute("UPDATE questions SET test_cases = ?, created_date = ? WHERE id = ?", (json.dumps(new_10_tc), calc_date, row_id))
+            else:
+                conn.execute("UPDATE questions SET created_date = ? WHERE id = ?", (calc_date, row_id))
         except:
             new_10_tc = generate_10_test_cases(q_title, q_cat)
-            conn.execute("UPDATE questions SET test_cases = ? WHERE id = ?", (json.dumps(new_10_tc), row_id))
+            conn.execute("UPDATE questions SET test_cases = ?, created_date = ? WHERE id = ?", (json.dumps(new_10_tc), calc_date, row_id))
     conn.commit()
 
     # ── Insert non-coding Q&A (clear and re-insert) ─────────────────────────

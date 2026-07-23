@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 export default function CalendarPage() {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+  const [viewMode, setViewMode] = useState('all'); // 'all' or 'single'
   const [loading, setLoading] = useState(true);
   const [fetchingGFG, setFetchingGFG] = useState(false);
   const [company, setCompany] = useState('Google');
@@ -50,14 +51,27 @@ export default function CalendarPage() {
     }
   };
 
-  // Filter questions for the currently selected date
-  const selectedDateQuestions = calendarEvents.filter((e) => e.created_date === selectedDate);
+  // Group events by date
+  const eventsByDate = calendarEvents.reduce((acc, ev) => {
+    const d = ev.created_date || 'Unknown';
+    if (!acc[d]) acc[d] = [];
+    acc[d].push(ev);
+    return acc;
+  }, {});
+
+  const datesList = Object.keys(eventsByDate).sort().reverse();
+
+  // Filtered questions
+  const displayedQuestions = viewMode === 'single'
+    ? calendarEvents.filter((e) => e.created_date === selectedDate)
+    : calendarEvents;
 
   // Quick Date Navigator Helpers
   const changeDateBy = (days) => {
     const d = new Date(selectedDate);
     d.setDate(d.getDate() + days);
     setSelectedDate(d.toISOString().slice(0, 10));
+    setViewMode('single');
   };
 
   return (
@@ -74,19 +88,71 @@ export default function CalendarPage() {
             Daily Interview Questions & Calendar
           </h1>
           <p className="text-xs sm:text-sm text-[#908fa0] max-w-2xl">
-            Track daily interview questions asked by top tech companies. Powered by Playwright real-time GFG scraper and 10 edge-case test cases.
+            Track daily interview questions asked by top tech companies. Powered by Playwright real-time GFG scraper with 10 edge-case test cases per problem.
           </p>
         </div>
 
-        {/* Action controls */}
+        {/* View mode toggle controls */}
         <div className="flex flex-wrap items-center gap-3 relative z-10">
+          <div className="flex bg-[#1b1b23] border border-[#34343d] rounded-xl p-1">
+            <button
+              onClick={() => setViewMode('all')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'all' ? 'bg-[#6001d1] text-white' : 'text-[#908fa0] hover:text-white'
+              }`}
+            >
+              All Dates ({calendarEvents.length})
+            </button>
+            <button
+              onClick={() => setViewMode('single')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                viewMode === 'single' ? 'bg-[#6001d1] text-white' : 'text-[#908fa0] hover:text-white'
+              }`}
+            >
+              Selected Date Only
+            </button>
+          </div>
+
           <button
-            onClick={() => setSelectedDate(new Date().toISOString().slice(0, 10))}
+            onClick={() => { setSelectedDate(new Date().toISOString().slice(0, 10)); setViewMode('single'); }}
             className="px-4 py-2 rounded-xl bg-[#1b1b23] border border-[#34343d] text-xs font-semibold text-[#c0c1ff] hover:text-white transition-all flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-sm">today</span>
             <span>Today</span>
           </button>
+        </div>
+      </div>
+
+      {/* Interactive 14-Day Calendar Date Bar */}
+      <div className="p-4 rounded-2xl bg-[#13131b] border border-[#34343d] space-y-3">
+        <div className="flex items-center justify-between text-xs text-[#908fa0]">
+          <span className="font-bold text-white flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-amber-400 text-sm">date_range</span>
+            <span>Recent 14-Day Activity Heatmap</span>
+          </span>
+          <span>Click any date below to inspect daily GFG questions</span>
+        </div>
+
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+          {datesList.slice(0, 14).map((d) => {
+            const count = eventsByDate[d]?.length || 0;
+            const isSelected = selectedDate === d && viewMode === 'single';
+
+            return (
+              <button
+                key={d}
+                onClick={() => { setSelectedDate(d); setViewMode('single'); }}
+                className={`flex-1 min-w-[90px] p-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center shrink-0 ${
+                  isSelected
+                    ? 'bg-[#6001d1] border-[#8083ff] text-white shadow-lg shadow-purple-900/40'
+                    : 'bg-[#1b1b23] border-[#34343d] hover:border-[#6001d1]/50 text-[#908fa0] hover:text-white'
+                }`}
+              >
+                <span className="text-[10px] font-mono opacity-80">{d.slice(5)}</span>
+                <span className="text-xs font-bold text-white mt-0.5">{count} Questions</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -179,9 +245,11 @@ export default function CalendarPage() {
             </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-white font-mono">{selectedDate}</span>
-              <span className="px-2 py-0.5 rounded-md bg-[#1f1f27] text-[10px] text-[#c0c1ff] border border-[#34343d] font-mono">
-                {selectedDateQuestions.length} Questions
+              <span className="text-sm font-bold text-white font-mono">
+                {viewMode === 'all' ? 'All Stored Calendar Dates' : selectedDate}
+              </span>
+              <span className="px-2 py-0.5 rounded-md bg-[#1f1f27] text-[10px] text-[#c0c1ff] border border-[#34343d] font-mono font-bold">
+                {displayedQuestions.length} Questions
               </span>
             </div>
 
@@ -195,13 +263,13 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* Questions Grid for Selected Date */}
+        {/* Questions Grid */}
         {loading ? (
           <div className="p-12 text-center text-xs text-[#908fa0] space-y-3">
             <div className="w-8 h-8 rounded-full border-2 border-[#6001d1] border-t-transparent animate-spin mx-auto"></div>
             <p>Loading Calendar Questions...</p>
           </div>
-        ) : selectedDateQuestions.length === 0 ? (
+        ) : displayedQuestions.length === 0 ? (
           <div className="p-12 text-center text-[#908fa0] bg-[#13131b] border border-[#34343d] rounded-3xl space-y-3">
             <span className="material-symbols-outlined text-4xl text-[#464554]">calendar_today</span>
             <p className="font-semibold text-sm text-white">No questions stored for {selectedDate}</p>
@@ -209,7 +277,7 @@ export default function CalendarPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {selectedDateQuestions.map((q) => (
+            {displayedQuestions.map((q) => (
               <div
                 key={q.id}
                 className="p-5 rounded-2xl bg-[#13131b] border border-[#34343d] hover:border-[#6001d1]/50 transition-all flex flex-col justify-between space-y-4 shadow-lg group"
@@ -217,7 +285,7 @@ export default function CalendarPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#1f1f27] text-[#c0c1ff] border border-[#34343d]">
-                      {q.created_date}
+                      📅 {q.created_date}
                     </span>
 
                     <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
@@ -239,7 +307,7 @@ export default function CalendarPage() {
                 </div>
 
                 <div className="pt-3 border-t border-[#34343d]/60 flex items-center justify-between gap-2 text-xs">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     {q.companies && q.companies.map((c, i) => (
                       <span key={i} className="px-2 py-0.5 rounded bg-[#1f1f27] text-[10px] text-[#ffb783] border border-[#34343d] font-semibold">
                         {c}
