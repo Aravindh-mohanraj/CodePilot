@@ -61,6 +61,7 @@ export default function Layout({ children }) {
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: 'grid_view' },
     { label: 'Explore Questions', path: '/questions', icon: 'travel_explore' },
+    { label: 'Daily Calendar', path: '/calendar', icon: 'calendar_month' },
     { label: 'Companies', path: '/companies', icon: 'domain' },
     { label: 'Categories', path: '/categories', icon: 'category' },
     { label: 'AI Assistant', path: '/ai-assistant', icon: 'smart_toy' },

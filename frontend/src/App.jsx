@@ -10,6 +10,7 @@ import CompaniesPage from './pages/CompaniesPage';
 import CategoriesPage from './pages/CategoriesPage';
 import ProfilePage from './pages/ProfilePage';
 import ReferencePage from './pages/ReferencePage';
+import CalendarPage from './pages/CalendarPage';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/questions" element={<ExploreQuestionsPage />} />
           <Route path="/solver/:id" element={<QuestionSolverPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/ai-assistant" element={<AIAssistantPage />} />
           <Route path="/companies" element={<CompaniesPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
