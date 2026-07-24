@@ -384,7 +384,7 @@ def fetch_gfg_daily_question(
 
         added_questions = []
 
-        for item in items[:2]:  # Process top real-time questions from live feed
+        for item in items:  # Process ALL real-time questions from live feeds
             base_title = item["title"]
             src = item.get("source", "Real-Time Scraper")
 
