@@ -74,6 +74,38 @@ export default function CalendarPage() {
     setViewMode('single');
   };
 
+  // Download Daily Questions as JSON File
+  const handleDownloadJSON = () => {
+    if (!displayedQuestions || displayedQuestions.length === 0) return;
+
+    const exportData = displayedQuestions.map((q) => ({
+      id: q.id,
+      title: q.title,
+      category: q.category || 'Algorithms',
+      difficulty: q.difficulty,
+      companies: q.companies || [],
+      created_date: q.created_date,
+      statement: q.statement || '',
+      examples: q.examples || [],
+      constraints: q.constraints || [],
+      python_solution: q.python_solution || '',
+      java_solution: q.java_solution || '',
+      explanation: q.explanation || '',
+      test_cases: q.test_cases || []
+    }));
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `codepilot_daily_questions_${viewMode === 'single' ? selectedDate : 'all'}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="p-6 sm:p-8 max-w-7xl mx-auto space-y-8 text-[#e4e1ed]">
       
@@ -88,12 +120,21 @@ export default function CalendarPage() {
             Daily Interview Questions & Calendar
           </h1>
           <p className="text-xs sm:text-sm text-[#908fa0] max-w-2xl">
-            Track daily interview questions asked by top tech companies. Powered by Playwright real-time GFG scraper with 10 edge-case test cases per problem.
+            Track daily interview questions asked by top tech companies. Powered by Playwright real-time GFG scraper with Gemini AI solutions & test cases.
           </p>
         </div>
 
-        {/* View mode toggle controls */}
+        {/* View mode toggle & Export JSON controls */}
         <div className="flex flex-wrap items-center gap-3 relative z-10">
+          <button
+            onClick={handleDownloadJSON}
+            disabled={displayedQuestions.length === 0}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-900/30 disabled:opacity-40"
+          >
+            <span className="material-symbols-outlined text-sm">download</span>
+            <span>Download JSON ({displayedQuestions.length})</span>
+          </button>
+
           <div className="flex bg-[#1b1b23] border border-[#34343d] rounded-xl p-1">
             <button
               onClick={() => setViewMode('all')}
@@ -261,6 +302,15 @@ export default function CalendarPage() {
               <span className="material-symbols-outlined text-base">chevron_right</span>
             </button>
           </div>
+
+          <button
+            onClick={handleDownloadJSON}
+            disabled={displayedQuestions.length === 0}
+            className="px-3.5 py-1.5 rounded-xl bg-[#1f1f27] hover:bg-emerald-600 border border-[#34343d] hover:border-emerald-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 disabled:opacity-40"
+          >
+            <span className="material-symbols-outlined text-sm text-emerald-400">download</span>
+            <span>Export JSON</span>
+          </button>
         </div>
 
         {/* Questions Grid */}

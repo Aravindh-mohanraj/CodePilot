@@ -390,34 +390,36 @@ def fetch_gfg_daily_question(
             }
         }
 
-    # Generate full AI package (solution, statement, 10 test cases)
+    # Generate full AI package via Gemini API (solution code, statement, test cases)
     ai_data = generate_solution(selected_title)
-    test_cases_10 = [
-        {"input": "Sample case 1: Standard input", "expected": "Valid Output 1", "explanation": "Happy path test case"},
-        {"input": "Sample case 2: Extended input", "expected": "Valid Output 2", "explanation": "Multiple elements test case"},
-        {"input": "[] / Empty Data Structure", "expected": "0 or []", "explanation": "Edge Case 1: Empty input check"},
-        {"input": "Single Element [1]", "expected": "1", "explanation": "Edge Case 2: Boundary length of 1"},
-        {"input": "Duplicate values [5, 5, 5]", "expected": "Handled", "explanation": "Edge Case 3: Identical values handling"},
-        {"input": "Negative integers [-10, -3, -25]", "expected": "Handled", "explanation": "Edge Case 4: Negative integer values"},
-        {"input": "Sorted Ascending array", "expected": "Handled", "explanation": "Edge Case 5: Already sorted sequence"},
-        {"input": "Sorted Descending array", "expected": "Handled", "explanation": "Edge Case 6: Reverse ordered sequence"},
-        {"input": "Max Int boundary (10^9)", "expected": "Handled", "explanation": "Edge Case 7: 32-bit integer overflow limit"},
-        {"input": "Scale test (10^5 elements)", "expected": "Passes O(N)", "explanation": "Edge Case 8: Maximum constraint stress test"}
-    ]
+    ai_test_cases = ai_data.get("test_cases", [])
+    if not ai_test_cases or len(ai_test_cases) == 0:
+        ai_test_cases = [
+            {"input": "Sample case 1: Standard input", "expected": "Valid Output 1", "explanation": "Happy path test case"},
+            {"input": "Sample case 2: Extended input", "expected": "Valid Output 2", "explanation": "Multiple elements test case"},
+            {"input": "[] / Empty Data Structure", "expected": "0 or []", "explanation": "Edge Case 1: Empty input check"},
+            {"input": "Single Element [1]", "expected": "1", "explanation": "Edge Case 2: Boundary length of 1"},
+            {"input": "Duplicate values [5, 5, 5]", "expected": "Handled", "explanation": "Edge Case 3: Identical values handling"},
+            {"input": "Negative integers [-10, -3, -25]", "expected": "Handled", "explanation": "Edge Case 4: Negative integer values"},
+            {"input": "Sorted Ascending array", "expected": "Handled", "explanation": "Edge Case 5: Already sorted sequence"},
+            {"input": "Sorted Descending array", "expected": "Handled", "explanation": "Edge Case 6: Reverse ordered sequence"},
+            {"input": "Max Int boundary (10^9)", "expected": "Handled", "explanation": "Edge Case 7: 32-bit integer overflow limit"},
+            {"input": "Scale test (10^5 elements)", "expected": "Passes O(N)", "explanation": "Edge Case 8: Maximum constraint stress test"}
+        ]
 
     new_q = Question(
         title=selected_title,
         type="coding",
-        category="Dynamic Programming" if "DP" in difficulty else "Arrays & Hashing",
+        category=ai_data.get("category", "Arrays & Hashing"),
         difficulty=difficulty,
         companies=[company],
         statement=ai_data.get("statement", f"Real-time GFG interview problem asked at {company}."),
         examples=ai_data.get("examples", []),
         constraints=ai_data.get("constraints", ["1 <= N <= 10^5"]),
-        python_solution=ai_data.get("python_solution", "class Solution:\n    def solve(self, *args):\n        pass"),
-        java_solution=ai_data.get("java_solution", "class Solution {\n    public void solve() {}\n}"),
-        test_cases=test_cases_10,
-        explanation=ai_data.get("explanation", f"GeeksforGeeks real-time interview question asked by {company}."),
+        python_solution=ai_data.get("python_solution", "class Solution:\n    def solve(self, data):\n        return data"),
+        java_solution=ai_data.get("java_solution", "public class Solution {\n    public Object solve(Object data) {\n        return data;\n    }\n}"),
+        test_cases=ai_test_cases,
+        explanation=ai_data.get("explanation", f"Real-time interview question asked by {company}."),
         created_date=req_date,
         is_daily="true"
     )
@@ -427,14 +429,14 @@ def fetch_gfg_daily_question(
 
     return {
         "status": "success",
-        "message": f"Successfully scraped & added GFG question for {company} on {req_date}",
+        "message": f"Successfully scraped '{new_q.title}' with Gemini solutions & {len(ai_test_cases)} test cases for {company} on {req_date}",
         "question": {
             "id": new_q.id,
             "title": new_q.title,
             "company": company,
             "difficulty": difficulty,
             "date": req_date,
-            "test_cases_count": 10
+            "test_cases_count": len(ai_test_cases)
         }
     }
 
