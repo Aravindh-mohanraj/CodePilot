@@ -806,7 +806,7 @@ def signup(req: SignupRequest, db: Session = Depends(get_db)):
     
     existing = db.query(User).filter(User.email == email_clean).first()
     if existing:
-        raise HTTPException(status_code=400, detail="User with this email already exists")
+        raise HTTPException(status_code=400, detail="Account already exists for this email. Please Log In!")
     
     hashed = hash_password(req.password)
     user = User(
@@ -839,26 +839,12 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email and password are required")
 
     user = db.query(User).filter(User.email == email_clean).first()
-    
-    # Auto-register if email does not exist yet for seamless login
     if not user:
-        hashed = hash_password(req.password)
-        username = email_clean.split("@")[0].replace(".", " ").title() or "Developer"
-        user = User(
-            name=username,
-            email=email_clean,
-            hashed_password=hashed,
-            created_at=datetime.utcnow().isoformat()
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-    else:
-        if user.hashed_password and user.hashed_password != hash_password(req.password):
-            # Update password if user registered via Google / guest mode earlier
-            user.hashed_password = hash_password(req.password)
-            db.commit()
-    
+        raise HTTPException(status_code=400, detail="Account not found. Please Sign Up first!")
+
+    if user.hashed_password != hash_password(req.password):
+        raise HTTPException(status_code=401, detail="Invalid password. Please check your credentials!")
+
     token = f"token_{user.id}_{hash_password(email_clean)[:12]}"
     
     return {
