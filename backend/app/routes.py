@@ -640,18 +640,37 @@ def execute_code(req: CodeExecuteRequest, db: Session = Depends(get_db)):
                             res = execute_method_safely(method, str(tc_input))
                             actual_result = str(res)
                             
-                            norm_act = actual_result.replace(" ", "").lower()
-                            norm_exp = str(tc_expected).replace(" ", "").lower()
-                            
-                            if norm_act == norm_exp or "handled" in norm_exp or "valid" in norm_exp or "passed" in norm_exp or not actual_result.startswith("Execution Error"):
-                                passed = True
+                            def check_testcase_match(actual, expected):
+                                if actual is None:
+                                    return False
+                                act_str = str(actual).strip()
+                                exp_str = str(expected).strip()
+                                if act_str == exp_str:
+                                    return True
+                                norm_act = act_str.replace(" ", "").replace("'", '"').lower()
+                                norm_exp = exp_str.replace(" ", "").replace("'", '"').lower()
+                                if norm_act == norm_exp:
+                                    return True
+                                try:
+                                    if float(norm_act) == float(norm_exp):
+                                        return True
+                                except Exception:
+                                    pass
+                                try:
+                                    if json.loads(norm_act) == json.loads(norm_exp):
+                                        return True
+                                except Exception:
+                                    pass
+                                return False
+
+                            passed = check_testcase_match(actual_result, tc_expected)
                         except Exception as ex:
                             actual_result = f"Execution Error: {ex}"
                             passed = False
 
                 if actual_result is None:
-                    actual_result = "Pass (Verified Code Output)"
-                    passed = True
+                    actual_result = "No method output returned"
+                    passed = False
 
                 evaluated_cases.append({
                     "id": i,
