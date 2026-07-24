@@ -541,18 +541,16 @@ def safe_eval_input(tc_input_str):
     if not tc_input_str or not isinstance(tc_input_str, str):
         return []
     
-    # 1. Handle key=val pairs like "nums = [2,7,11,15], target = 9"
+    # 1. Match key = val assignments like "l1 = [2, 4, 3], l2 = [5, 6, 4]" or "nums = [2,7,11,15], target = 9"
     if "=" in tc_input_str:
         try:
-            parts = tc_input_str.split(",")
-            args = []
-            for part in parts:
-                if "=" in part:
-                    val_str = part.split("=")[1].strip()
-                    args.append(eval(val_str))
-                else:
-                    args.append(eval(part.strip()))
-            return args
+            import re
+            matches = re.findall(r'([a-zA-Z0-9_]+)\s*=\s*(\[.*?\]|"[^"]*"|\'[^\']*\'|[-?\d\.]+|True|False|true|false)', tc_input_str)
+            if matches:
+                args = []
+                for _, val in matches:
+                    args.append(eval(val.strip()))
+                return args
         except Exception:
             pass
 
@@ -567,13 +565,13 @@ def safe_eval_input(tc_input_str):
 
     # 3. Try raw eval
     try:
-        val = eval(tc_input_str)
+        val = eval(tc_input_str.strip())
         return [val] if not isinstance(val, tuple) else list(val)
     except Exception:
         pass
 
     # 4. Fallback: pass clean string as argument
-    return [tc_input_str]
+    return [tc_input_str.strip()]
 
 
 def execute_method_safely(method, raw_input):
