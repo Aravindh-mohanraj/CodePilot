@@ -159,6 +159,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
       if (!res.ok) throw new Error(data.detail || 'Authentication failed');
       localStorage.setItem('prepforge_user', JSON.stringify(data.user));
       localStorage.setItem('prepforge_token', data.token);
+      window.dispatchEvent(new Event('storage'));
       if (onSuccess) onSuccess(data.user);
       onClose();
     } catch (err) {
