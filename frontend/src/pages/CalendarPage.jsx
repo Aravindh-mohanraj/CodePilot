@@ -9,6 +9,7 @@ export default function CalendarPage() {
   const [fetchingGFG, setFetchingGFG] = useState(false);
   const [company, setCompany] = useState('Google');
   const [difficulty, setDifficulty] = useState('Medium');
+  const [sourceChoice, setSourceChoice] = useState('all');
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -34,18 +35,18 @@ export default function CalendarPage() {
     setFetchingGFG(true);
     setMsg('');
     try {
-      const res = await fetch(`/api/daily/fetch-gfg?company=${encodeURIComponent(company)}&difficulty=${encodeURIComponent(difficulty)}&target_date=${encodeURIComponent(selectedDate)}`, {
+      const res = await fetch(`/api/daily/fetch-gfg?company=${encodeURIComponent(company)}&difficulty=${encodeURIComponent(difficulty)}&target_date=${encodeURIComponent(selectedDate)}&source_choice=${encodeURIComponent(sourceChoice)}`, {
         method: 'POST'
       });
       const data = await res.json();
       if (res.ok) {
-        setMsg(`✨ ${data.message || 'Scraped & AI Generated 10 test cases!'}`);
+        setMsg(`✨ ${data.message || 'Scraped & AI Generated 15 test cases!'}`);
         await fetchCalendarData();
       } else {
-        setMsg(`⚠️ ${data.detail || 'Failed to fetch GFG questions'}`);
+        setMsg(`⚠️ ${data.detail || 'Failed to fetch real-time questions'}`);
       }
     } catch (err) {
-      setMsg('⚠️ Network error fetching GFG questions.');
+      setMsg('⚠️ Network error fetching real-time questions.');
     } finally {
       setFetchingGFG(false);
     }
@@ -197,17 +198,31 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      {/* Real-time GFG Scraper Controls Panel */}
+      {/* Real-time Multi-Source Scraper Controls Panel */}
       <div className="p-6 rounded-3xl bg-[#13131b] border border-[#34343d] space-y-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-[#34343d]/60 pb-3">
           <div className="flex items-center gap-2 text-sm font-bold text-white">
             <span className="material-symbols-outlined text-amber-400 text-base">travel_explore</span>
-            <span>GeeksforGeeks Real-Time Playwright Scraper</span>
+            <span>Real-Time Multi-Source Scraper (GFG + LeetCode + HackerRank)</span>
           </div>
-          <span className="text-[11px] font-mono text-[#908fa0]">Playwright + BeautifulSoup + Gemini AI</span>
+          <span className="text-[11px] font-mono text-[#908fa0]">BeautifulSoup + Playwright + GraphQL API + Gemini AI</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+          <div>
+            <label className="block text-[11px] font-medium text-[#908fa0] mb-1">Source Platform</label>
+            <select
+              value={sourceChoice}
+              onChange={(e) => setSourceChoice(e.target.value)}
+              className="w-full bg-[#1b1b23] border border-[#34343d] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#c0c1ff]"
+            >
+              <option value="all">All Sources (GFG + LeetCode)</option>
+              <option value="gfg">GeeksforGeeks (BeautifulSoup)</option>
+              <option value="leetcode">LeetCode (GraphQL API)</option>
+              <option value="hackerrank">HackerRank Live</option>
+            </select>
+          </div>
+
           <div>
             <label className="block text-[11px] font-medium text-[#908fa0] mb-1">Company</label>
             <select
@@ -258,7 +273,7 @@ export default function CalendarPage() {
               ) : (
                 <span className="material-symbols-outlined text-sm">rocket_launch</span>
               )}
-              <span>{fetchingGFG ? 'Scraping GFG...' : 'Scrape GFG & Add Question'}</span>
+              <span>{fetchingGFG ? 'Scraping Live...' : 'Scrape Real-Time'}</span>
             </button>
           </div>
         </div>
