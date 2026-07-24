@@ -230,12 +230,15 @@ export default function CalendarPage() {
               onChange={(e) => setCompany(e.target.value)}
               className="w-full bg-[#1b1b23] border border-[#34343d] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#c0c1ff]"
             >
+              <option value="All">All Companies</option>
               <option value="Google">Google</option>
               <option value="Amazon">Amazon</option>
               <option value="Meta">Meta</option>
               <option value="Microsoft">Microsoft</option>
               <option value="Apple">Apple</option>
               <option value="Uber">Uber</option>
+              <option value="Netflix">Netflix</option>
+              <option value="TCS CodeVita">TCS CodeVita</option>
             </select>
           </div>
 
@@ -246,6 +249,7 @@ export default function CalendarPage() {
               onChange={(e) => setDifficulty(e.target.value)}
               className="w-full bg-[#1b1b23] border border-[#34343d] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#c0c1ff]"
             >
+              <option value="All">All Difficulties</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>

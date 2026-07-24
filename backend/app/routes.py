@@ -14,6 +14,7 @@ from datetime import datetime
 from .database import get_db
 from .models import Question, User, UserSubmission, UserDownload, NonCodingQuestion
 from .gemini_service import generate_solution, chat_with_ai
+from .gfg_scraper import extract_problem_titles_gfg, extract_multi_source_realtime
 
 router = APIRouter()
 

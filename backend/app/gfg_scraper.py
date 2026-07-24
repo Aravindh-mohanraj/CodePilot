@@ -23,13 +23,15 @@ def extract_leetcode_realtime(cmp: str, difficulty: str):
     }
     """
     diff_map = {"Easy": "EASY", "Medium": "MEDIUM", "Hard": "HARD"}
+    filters = {}
+    if difficulty and difficulty.lower() != "all" and difficulty in diff_map:
+        filters["difficulty"] = diff_map[difficulty]
+
     variables = {
         "categorySlug": "",
         "skip": 0,
         "limit": 10,
-        "filters": {
-            "difficulty": diff_map.get(difficulty, "MEDIUM")
-        }
+        "filters": filters
     }
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -51,7 +53,9 @@ def extract_leetcode_realtime(cmp: str, difficulty: str):
 
 def extract_gfg_realtime(cmp: str, difficulty: str):
     """Scrapes real-time interview problem titles from GeeksforGeeks using BeautifulSoup + Playwright."""
-    url = f"https://www.geeksforgeeks.org/explore?page=1&company={cmp}&difficulty={difficulty}&sortBy=submissions"
+    company_param = cmp if cmp and cmp.lower() != "all" else "Google"
+    diff_param = difficulty if difficulty and difficulty.lower() != "all" else "Medium"
+    url = f"https://www.geeksforgeeks.org/explore?page=1&company={company_param}&difficulty={diff_param}&sortBy=submissions"
     results = []
 
     # 1. Try Playwright Sync Browser Scraper
@@ -130,16 +134,17 @@ def extract_multi_source_realtime(cmp: str, difficulty: str, source_choice: str 
     - HackerRank (Public Practice API)
     """
     all_results = []
+    src = source_choice.lower()
 
-    if source_choice in ["all", "leetcode"]:
+    if src in ["all", "leetcode"]:
         lc_items = extract_leetcode_realtime(cmp, difficulty)
         all_results.extend(lc_items)
 
-    if source_choice in ["all", "gfg"]:
+    if src in ["all", "gfg"]:
         gfg_items = extract_gfg_realtime(cmp, difficulty)
         all_results.extend(gfg_items)
 
-    if source_choice in ["all", "hackerrank"]:
+    if src in ["all", "hackerrank"]:
         hr_items = extract_hackerrank_realtime(cmp, difficulty)
         all_results.extend(hr_items)
 
