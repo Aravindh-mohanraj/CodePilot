@@ -11,6 +11,7 @@ export default function CalendarPage() {
   const [difficulty, setDifficulty] = useState('Medium');
   const [sourceChoice, setSourceChoice] = useState('all');
   const [msg, setMsg] = useState('');
+  const [selectedIds, setSelectedIds] = useState(new Set());
 
   useEffect(() => {
     fetchCalendarData();
@@ -67,6 +68,35 @@ export default function CalendarPage() {
     ? calendarEvents.filter((e) => e.created_date === selectedDate)
     : calendarEvents;
 
+  // Toggle Single Question Selection
+  const toggleSelectQuestion = (id) => {
+    const updated = new Set(selectedIds);
+    if (updated.has(id)) {
+      updated.delete(id);
+    } else {
+      updated.add(id);
+    }
+    setSelectedIds(updated);
+  };
+
+  // Select / Deselect All Currently Displayed Questions
+  const toggleSelectAll = () => {
+    const displayedIds = displayedQuestions.map(q => q.id);
+    const allSelected = displayedIds.every(id => selectedIds.has(id));
+
+    if (allSelected) {
+      const updated = new Set(selectedIds);
+      displayedIds.forEach(id => updated.delete(id));
+      setSelectedIds(updated);
+    } else {
+      const updated = new Set(selectedIds);
+      displayedIds.forEach(id => updated.add(id));
+      setSelectedIds(updated);
+    }
+  };
+
+  const isAllSelected = displayedQuestions.length > 0 && displayedQuestions.every(q => selectedIds.has(q.id));
+
   // Quick Date Navigator Helpers
   const changeDateBy = (days) => {
     const d = new Date(selectedDate);
@@ -75,11 +105,16 @@ export default function CalendarPage() {
     setViewMode('single');
   };
 
-  // Download Daily Questions as JSON File
+  // Download Daily Questions as JSON File (Selected or All)
   const handleDownloadJSON = () => {
-    if (!displayedQuestions || displayedQuestions.length === 0) return;
+    let exportSource = displayedQuestions;
+    if (selectedIds.size > 0) {
+      exportSource = calendarEvents.filter(q => selectedIds.has(q.id));
+    }
 
-    const exportData = displayedQuestions.map((q) => ({
+    if (!exportSource || exportSource.length === 0) return;
+
+    const exportData = exportSource.map((q) => ({
       id: q.id,
       title: q.title,
       category: q.category || 'Algorithms',
@@ -100,7 +135,7 @@ export default function CalendarPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `codepilot_daily_questions_${viewMode === 'single' ? selectedDate : 'all'}.json`;
+    link.download = `codepilot_daily_questions_${selectedIds.size > 0 ? 'selected' : (viewMode === 'single' ? selectedDate : 'all')}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -294,7 +329,7 @@ export default function CalendarPage() {
       <div className="space-y-4">
         
         {/* Date Controls Bar */}
-        <div className="flex items-center justify-between p-4 rounded-2xl bg-[#13131b] border border-[#34343d]">
+        <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-[#13131b] border border-[#34343d]">
           <div className="flex items-center gap-3">
             <button
               onClick={() => changeDateBy(-1)}
@@ -322,14 +357,33 @@ export default function CalendarPage() {
             </button>
           </div>
 
-          <button
-            onClick={handleDownloadJSON}
-            disabled={displayedQuestions.length === 0}
-            className="px-3.5 py-1.5 rounded-xl bg-[#1f1f27] hover:bg-emerald-600 border border-[#34343d] hover:border-emerald-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 disabled:opacity-40"
-          >
-            <span className="material-symbols-outlined text-sm text-emerald-400">download</span>
-            <span>Export JSON</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleSelectAll}
+              disabled={displayedQuestions.length === 0}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border disabled:opacity-40 ${
+                isAllSelected
+                  ? 'bg-[#6001d1] border-[#8083ff] text-white shadow-lg shadow-purple-900/40'
+                  : 'bg-[#1b1b23] border-[#34343d] text-[#908fa0] hover:text-white'
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm text-amber-400">
+                {isAllSelected ? 'check_box' : 'check_box_outline_blank'}
+              </span>
+              <span>{isAllSelected ? 'Deselect All' : 'Select All'} ({displayedQuestions.length})</span>
+            </button>
+
+            <button
+              onClick={handleDownloadJSON}
+              disabled={displayedQuestions.length === 0 && selectedIds.size === 0}
+              className="px-3.5 py-1.5 rounded-xl bg-[#1f1f27] hover:bg-emerald-600 border border-[#34343d] hover:border-emerald-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 disabled:opacity-40"
+            >
+              <span className="material-symbols-outlined text-sm text-emerald-400">download</span>
+              <span>
+                Export JSON ({selectedIds.size > 0 ? `${selectedIds.size} Selected` : `${displayedQuestions.length} All`})
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Questions Grid */}
@@ -346,34 +400,47 @@ export default function CalendarPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {displayedQuestions.map((q) => (
-              <div
-                key={q.id}
-                className="p-5 rounded-2xl bg-[#13131b] border border-[#34343d] hover:border-[#6001d1]/50 transition-all flex flex-col justify-between space-y-4 shadow-lg group"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#1f1f27] text-[#c0c1ff] border border-[#34343d]">
-                      📅 {q.created_date}
-                    </span>
+            {displayedQuestions.map((q) => {
+              const isSelected = selectedIds.has(q.id);
+              return (
+                <div
+                  key={q.id}
+                  onClick={() => toggleSelectQuestion(q.id)}
+                  className={`p-5 rounded-2xl bg-[#13131b] border transition-all flex flex-col justify-between space-y-4 shadow-lg cursor-pointer group ${
+                    isSelected ? 'border-[#8083ff] bg-[#1a1928] shadow-purple-900/20' : 'border-[#34343d] hover:border-[#6001d1]/50'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => { e.stopPropagation(); toggleSelectQuestion(q.id); }}
+                          className="w-4 h-4 rounded border-[#34343d] bg-[#1b1b23] text-[#6001d1] focus:ring-[#6001d1] cursor-pointer"
+                        />
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#1f1f27] text-[#c0c1ff] border border-[#34343d]">
+                          📅 {q.created_date}
+                        </span>
+                      </div>
 
-                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-                      q.difficulty === 'Easy' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' :
-                      q.difficulty === 'Medium' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' :
-                      'bg-rose-500/10 border-rose-500/30 text-rose-400'
-                    }`}>
-                      {q.difficulty}
-                    </span>
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                        q.difficulty === 'Easy' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' :
+                        q.difficulty === 'Medium' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' :
+                        'bg-rose-500/10 border-rose-500/30 text-rose-400'
+                      }`}>
+                        {q.difficulty}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-base text-white group-hover:text-[#c0c1ff] transition-colors">
+                      {q.title}
+                    </h3>
+
+                    <p className="text-xs text-[#908fa0] line-clamp-2 leading-relaxed">
+                      {q.statement}
+                    </p>
                   </div>
-
-                  <h3 className="font-bold text-base text-white group-hover:text-[#c0c1ff] transition-colors">
-                    {q.title}
-                  </h3>
-
-                  <p className="text-xs text-[#908fa0] line-clamp-2 leading-relaxed">
-                    {q.statement}
-                  </p>
-                </div>
 
                 <div className="pt-3 border-t border-[#34343d]/60 flex items-center justify-between gap-2 text-xs">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -396,8 +463,9 @@ export default function CalendarPage() {
                   </Link>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
         )}
       </div>
 
