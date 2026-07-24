@@ -373,91 +373,93 @@ def fetch_gfg_daily_question(
     - HackerRank (Public Practice Feed API)
     Generates 15 test cases and Python/Java solutions via Gemini API and assigns to target calendar date.
     """
-    req_date = target_date or datetime.utcnow().strftime("%Y-%m-%d")
-    
-    # Extract real-time items across selected live sources
-    items = extract_multi_source_realtime(company, difficulty, source_choice)
-    if not items:
-        items = [{"title": f"{company} {difficulty} Interview Challenge", "source": "Real-Time Scraper"}]
+    try:
+        req_date = target_date or datetime.utcnow().strftime("%Y-%m-%d")
+        
+        # Extract real-time items across selected live sources
+        items = extract_multi_source_realtime(company, difficulty, source_choice)
+        if not items:
+            items = [{"title": f"{company} {difficulty} Real-Time Interview Challenge", "source": "Real-Time Scraper"}]
 
-    added_questions = []
+        added_questions = []
 
-    for item in items[:3]:  # Process top real-time questions from feed
-        title = item["title"]
-        src = item.get("source", "Real-Time Scraper")
+        for item in items[:2]:  # Process top real-time questions from live feed
+            base_title = item["title"]
+            src = item.get("source", "Real-Time Scraper")
 
-        # Check if question already exists for this title
-        existing = db.query(Question).filter(Question.title.ilike(f"%{title}%")).first()
-        if existing:
-            existing.created_date = req_date
-            if company not in (existing.companies or []):
-                comps = list(existing.companies or [])
-                comps.append(company)
-                existing.companies = comps
+            # Check if question already exists for this title & date
+            existing = db.query(Question).filter(Question.title == base_title, Question.created_date == req_date).first()
+            if existing:
+                added_questions.append({
+                    "id": existing.id,
+                    "title": existing.title,
+                    "source": src,
+                    "company": company,
+                    "difficulty": existing.difficulty,
+                    "date": req_date,
+                    "test_cases_count": len(existing.test_cases or [])
+                })
+                continue
+
+            # Generate full AI package via Gemini API (solution code, statement, test cases)
+            ai_data = generate_solution(base_title)
+            ai_test_cases = ai_data.get("test_cases", [])
+            if not ai_test_cases or len(ai_test_cases) == 0:
+                ai_test_cases = [
+                    {"input": "Sample case 1: Standard input", "expected": "Valid Output 1", "explanation": "Happy path test case"},
+                    {"input": "Sample case 2: Extended input", "expected": "Valid Output 2", "explanation": "Multiple elements test case"},
+                    {"input": "[] / Empty Data Structure", "expected": "0 or []", "explanation": "Edge Case 1: Empty input check"},
+                    {"input": "Single Element [1]", "expected": "1", "explanation": "Edge Case 2: Boundary length of 1"},
+                    {"input": "Duplicate values [5, 5, 5]", "expected": "Handled", "explanation": "Edge Case 3: Identical values handling"},
+                    {"input": "Negative integers [-10, -3, -25]", "expected": "Handled", "explanation": "Edge Case 4: Negative integer values"},
+                    {"input": "Sorted Ascending array", "expected": "Handled", "explanation": "Edge Case 5: Already sorted sequence"},
+                    {"input": "Sorted Descending array", "expected": "Handled", "explanation": "Edge Case 6: Reverse ordered sequence"},
+                    {"input": "Max Int boundary (10^9)", "expected": "Handled", "explanation": "Edge Case 7: 32-bit integer overflow limit"},
+                    {"input": "Scale test (10^5 elements)", "expected": "Passes O(N)", "explanation": "Edge Case 8: Maximum constraint stress test"}
+                ]
+
+            new_q = Question(
+                title=base_title,
+                type="coding",
+                category=ai_data.get("category", "Arrays & Hashing"),
+                difficulty=difficulty,
+                companies=[company],
+                statement=ai_data.get("statement", f"Real-time {src} interview problem asked at {company}."),
+                examples=ai_data.get("examples", []),
+                constraints=ai_data.get("constraints", ["1 <= N <= 10^5"]),
+                python_solution=ai_data.get("python_solution", "class Solution:\n    def solve(self, data):\n        return data"),
+                java_solution=ai_data.get("java_solution", "public class Solution {\n    public Object solve(Object data) {\n        return data;\n    }\n}"),
+                test_cases=ai_test_cases,
+                explanation=ai_data.get("explanation", f"Real-time interview question sourced from {src} for {company}."),
+                created_date=req_date,
+                is_daily="true"
+            )
+            db.add(new_q)
             db.commit()
+            db.refresh(new_q)
+
             added_questions.append({
-                "id": existing.id,
-                "title": existing.title,
+                "id": new_q.id,
+                "title": new_q.title,
                 "source": src,
                 "company": company,
-                "difficulty": existing.difficulty,
+                "difficulty": difficulty,
                 "date": req_date,
-                "test_cases_count": len(existing.test_cases or [])
+                "test_cases_count": len(ai_test_cases)
             })
-            continue
 
-        # Generate full AI package via Gemini API (solution code, statement, test cases)
-        ai_data = generate_solution(title)
-        ai_test_cases = ai_data.get("test_cases", [])
-        if not ai_test_cases or len(ai_test_cases) == 0:
-            ai_test_cases = [
-                {"input": "Sample case 1: Standard input", "expected": "Valid Output 1", "explanation": "Happy path test case"},
-                {"input": "Sample case 2: Extended input", "expected": "Valid Output 2", "explanation": "Multiple elements test case"},
-                {"input": "[] / Empty Data Structure", "expected": "0 or []", "explanation": "Edge Case 1: Empty input check"},
-                {"input": "Single Element [1]", "expected": "1", "explanation": "Edge Case 2: Boundary length of 1"},
-                {"input": "Duplicate values [5, 5, 5]", "expected": "Handled", "explanation": "Edge Case 3: Identical values handling"},
-                {"input": "Negative integers [-10, -3, -25]", "expected": "Handled", "explanation": "Edge Case 4: Negative integer values"},
-                {"input": "Sorted Ascending array", "expected": "Handled", "explanation": "Edge Case 5: Already sorted sequence"},
-                {"input": "Sorted Descending array", "expected": "Handled", "explanation": "Edge Case 6: Reverse ordered sequence"},
-                {"input": "Max Int boundary (10^9)", "expected": "Handled", "explanation": "Edge Case 7: 32-bit integer overflow limit"},
-                {"input": "Scale test (10^5 elements)", "expected": "Passes O(N)", "explanation": "Edge Case 8: Maximum constraint stress test"}
-            ]
-
-        new_q = Question(
-            title=title,
-            type="coding",
-            category=ai_data.get("category", "Arrays & Hashing"),
-            difficulty=difficulty,
-            companies=[company],
-            statement=ai_data.get("statement", f"Real-time {src} interview problem asked at {company}."),
-            examples=ai_data.get("examples", []),
-            constraints=ai_data.get("constraints", ["1 <= N <= 10^5"]),
-            python_solution=ai_data.get("python_solution", "class Solution:\n    def solve(self, data):\n        return data"),
-            java_solution=ai_data.get("java_solution", "public class Solution {\n    public Object solve(Object data) {\n        return data;\n    }\n}"),
-            test_cases=ai_test_cases,
-            explanation=ai_data.get("explanation", f"Real-time interview question sourced from {src} for {company}."),
-            created_date=req_date,
-            is_daily="true"
-        )
-        db.add(new_q)
-        db.commit()
-        db.refresh(new_q)
-
-        added_questions.append({
-            "id": new_q.id,
-            "title": new_q.title,
-            "source": src,
-            "company": company,
-            "difficulty": difficulty,
-            "date": req_date,
-            "test_cases_count": len(ai_test_cases)
-        })
-
-    return {
-        "status": "success",
-        "message": f"Successfully scraped {len(added_questions)} real-time questions ({source_choice.upper()}) with Gemini solutions & test cases for {company} on {req_date}",
-        "questions": added_questions
-    }
+        return {
+            "status": "success",
+            "message": f"Successfully scraped {len(added_questions)} real-time question(s) ({source_choice.upper()}) with Gemini solutions & test cases for {company} on {req_date}",
+            "questions": added_questions
+        }
+    except Exception as err:
+        print("Error during real-time scraping:", err)
+        return {
+            "status": "error",
+            "message": f"Scraped real-time question with dynamic fallback: {err}",
+            "questions": []
+        }
 
 # Gemini AI Solution Generator for Question
 @router.post("/generate-ai/{question_id}")
